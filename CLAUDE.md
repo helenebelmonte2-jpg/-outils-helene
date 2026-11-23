@@ -59,3 +59,6 @@ Docs business : contrat, mail de bienvenue, questionnaire de profil alimentaire,
 - **Mots bannis** : « diète » et « régime » pour parler de sa méthode. Toujours dire **« rééquilibrage alimentaire »**.
 - **Pas de photos avant/après, jamais** : elle ne veut pas les partager (période difficile). Ne plus les proposer.
 - À compléter : vie perso (si elle le souhaite).
+
+## Règles visuelles
+- **Ne jamais utiliser une image extraite d'une vidéo comme photo** (carrousel, story…) sans son accord : elle s'est trouvée moche sur la capture du tapis de course. Utiliser uniquement les photos qu'elle choisit et envoie.
