@@ -47,3 +47,11 @@ Docs business : contrat, mail de bienvenue, questionnaire de profil alimentaire,
 - **Format qui ne marche pas** (23 à 500 vues) : gros bandeau rose de titre en haut, vidéo réduite au milieu, bandes noires, petits sous-titres. Hooks abstraits ou émotionnels (« La motivation ne suffit pas… », « Tu as tout essayé toute seule… »).
 - Lien en bio : vidéo YouTube qui explique son programme (choix d'Hélène, on la garde).
 - Presque 0 commentaire et 0 partage : le CTA « DÉCLIC » ne convertit pas encore (il faut le dire à l'oral et l'écrire à l'écran, et automatiser la réponse).
+
+## Parcours d'Hélène (ses mots, 23/11/2026)
+- Aide-soignante (encore aujourd'hui, horaires de soignante). Diplôme d'État 2009, EHPAD, HAD, puis préleveuse en labo (2019-2023).
+- Très complexée adolescente, a pris beaucoup de poids au lycée.
+- Rapport à la nourriture compliqué pendant des années. Plusieurs coachs : elle perdait du poids puis reprenait tout. Elle avait **peur de manger**.
+- Aujourd'hui : elle a trouvé un rythme alimentaire et sportif **adapté à sa vie de soignante**. Un sport qu'elle aime, qui lui donne envie de se lever.
+- Mission : aider les femmes à changer leur regard sur la nourriture, perdre du poids sans frustration, avec une méthode adaptée à leur rythme.
+- À compléter : nombre de kilos pris et perdus, photos avant/après, vie perso.
