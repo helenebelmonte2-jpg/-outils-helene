@@ -102,11 +102,20 @@ for i, (kind, a, b) in enumerate(slides):
             d.text((W / 2, y), t, font=XB(78), fill=WHITE, anchor="mm"); y += 100
     elif kind == "photo":
         im, d = base(i, n)
-        ph = Image.open(os.path.join(os.path.dirname(OUT), "photo.jpg"))
-        ph = ImageOps.fit(ph, (880, 640), centering=(0.5, 0.15))
-        mask = Image.new("L", ph.size, 0); ImageDraw.Draw(mask).rounded_rectangle((0, 0, *ph.size), 40, fill=255)
-        im.paste(ph, (100, 140), mask)
-        draw_rich(d, b, XB(58), 840, maxw=880, lh=1.25)
+        ph = ImageOps.exif_transpose(Image.open(os.path.join(os.path.dirname(OUT), "photo.jpg")).convert("RGB"))
+        pw, phh = ph.size
+        PW = 500; cw = int(pw * 0.42); ch = int(cw * H / PW)
+        x0 = int(pw * 0.47); y0 = 0
+        ph = ph.crop((x0, y0, x0 + cw, y0 + ch)).resize((PW, H), Image.LANCZOS)
+        im.paste(ph, (W - PW, 0))
+        d = ImageDraw.Draw(im)
+        # redraw handle/dots on the left column
+        d.rectangle((0, H - 140, W - PW, H), fill=CREAM)
+        tot = n * 22; xx = ((W - PW) - tot) / 2
+        for k in range(n):
+            d.ellipse((xx, H - 70, xx + 10, H - 60), fill=PINK if k == i else SOFT); xx += 22
+        d.text(((W - PW) / 2, H - 115), "@helene_belmonte", font=RG(26), fill=PINK, anchor="mm")
+        draw_rich(d, b, XB(54), 330, maxw=W - PW - 120, lh=1.25, x0=60)
     elif kind == "cta":
         im, d = base(i, n, PINK)
         d.text((W / 2, 300), "Tu te reconnais ?", font=XB(80), fill=WHITE, anchor="mm")
