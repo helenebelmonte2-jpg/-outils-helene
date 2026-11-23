@@ -56,4 +56,5 @@ Docs business : contrat, mail de bienvenue, questionnaire de profil alimentaire,
 - Mission : aider les femmes à changer leur regard sur la nourriture, perdre du poids sans frustration, avec une méthode adaptée à leur rythme.
 - Vers 21 ans : elle a **perdu 10 kg** grâce au rééquilibrage alimentaire et elle **maintient son poids** depuis. Elle n'a plus peur de manger et se fait plaisir à chaque repas.
 - **Mots bannis** : « diète » et « régime » pour parler de sa méthode. Toujours dire **« rééquilibrage alimentaire »**.
-- À compléter : photos avant/après, vie perso.
+- **Pas de photos avant/après, jamais** : elle ne veut pas les partager (période difficile). Ne plus les proposer.
+- À compléter : vie perso (si elle le souhaite).
