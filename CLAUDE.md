@@ -53,6 +53,7 @@ Docs business : contrat, mail de bienvenue, questionnaire de profil alimentaire,
 - Très complexée adolescente, a pris beaucoup de poids au lycée.
 - Rapport à la nourriture compliqué pendant des années. Plusieurs coachs : elle perdait du poids puis reprenait tout. Elle avait **peur de manger**.
 - Aujourd'hui : elle a trouvé un rythme alimentaire et sportif **adapté à sa vie de soignante**. Un sport qu'elle aime, qui lui donne envie de se lever.
+- Aujourd'hui tout va bien côté nourriture. Sa phrase : « Savoir prendre du temps pour moi a été la meilleure chose que j'ai pu faire, et surtout investir en moi. »
 - Mission : aider les femmes à changer leur regard sur la nourriture, perdre du poids sans frustration, avec une méthode adaptée à leur rythme.
 - Vers 21 ans : elle a **perdu 10 kg** le jour où elle a « enfin compris que la privation ne servait à rien » (rééquilibrage alimentaire), et elle **maintient son poids** depuis. Elle n'a plus peur de manger et se fait plaisir à chaque repas.
 - **Mots bannis** : « diète » et « régime » pour parler de sa méthode. Toujours dire **« rééquilibrage alimentaire »**.
