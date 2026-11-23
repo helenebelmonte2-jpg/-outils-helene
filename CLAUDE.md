@@ -40,3 +40,9 @@ Docs business : contrat, mail de bienvenue, questionnaire de profil alimentaire,
 ## Limites connues
 - Instagram n'est pas accessible depuis l'environnement (réseau et connexion obligatoire). Pour un audit du compte, demander des **captures d'écran** : profil, grille, statistiques sur 30 jours, meilleurs et moins bons Reels.
 - Les anciennes conversations sur Claude.ai ne sont pas accessibles. Ce fichier sert de mémoire.
+
+## Check Instagram du 23/11/2026 (captures d'écran)
+- 518 abonnés, 561 abonnements, 37 publications, compte vérifié. Sur 30 jours : 79 000 vues, 49 000 comptes, **94 % de non-abonnés**, +106 abonnés (+87 net). Pic de vues autour du 14-19/11.
+- **Formats qui marchent** (1 400 à 12 500 vues) : Hélène plein écran 9:16 + un aliment concret qui apparaît à l'image (photo détourée) + un mot-clé énorme à l'écran (« Concombre », « Fromage râpé », « 16H », « PROTÉINES », comparaisons cru/cuit). Hooks concrets, visuels, avec un côté « je te dis ce qu'il faut manger ».
+- **Format qui ne marche pas** (23 à 500 vues) : gros bandeau rose de titre en haut, vidéo réduite au milieu, bandes noires, petits sous-titres. Hooks abstraits ou émotionnels (« La motivation ne suffit pas… », « Tu as tout essayé toute seule… »).
+- Presque 0 commentaire et 0 partage : le CTA « DÉCLIC » ne convertit pas encore (il faut le dire à l'oral et l'écrire à l'écran, et automatiser la réponse).
