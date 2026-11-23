@@ -62,3 +62,10 @@ Docs business : contrat, mail de bienvenue, questionnaire de profil alimentaire,
 
 ## Règles visuelles
 - **Ne jamais utiliser une image extraite d'une vidéo comme photo** (carrousel, story…) sans son accord : elle s'est trouvée moche sur la capture du tapis de course. Utiliser uniquement les photos qu'elle choisit et envoie.
+
+## Contenus déjà créés (à retrouver quand elle les redemande)
+| Date | Contenu | Dans le dépôt | Sur le Drive |
+|---|---|---|---|
+| 23/11/2026 | **Carrousel « Mon histoire »** (11 slides + légende), version finale validée avec sa photo de la salle en slide 8 | `contenus/2026-11-23_carrousel_mon_histoire/` (script : `scripts/carrousel_mon_histoire.py`) | Montage perso → « Carrousel Mon histoire (23-11) » (`1U1q6-yKFjZ0s7DTPMM3IOsDEJfJ3oK1a`) |
+| 23/11/2026 | Story « Marche en pente » (texte incrusté sur la vidéo du tapis) | `contenus/2026-11-23_story_marche_en_pente/` | Pas sur le Drive (fichier trop lourd pour l'envoi) |
+| 23/11/2026 | Story à la une « Qui suis-je » (8 stories, textes seulement) | Textes à réécrire à partir de la section « Parcours d'Hélène » | — |
