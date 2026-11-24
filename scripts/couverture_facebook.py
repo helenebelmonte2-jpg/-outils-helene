@@ -54,7 +54,7 @@ elif VAR == "soignante":
     brush(200, "10 kg perdus, jamais repris", 62); brush(292, "même avec mes horaires de nuit", 56)
     center(385, "Je t’aide à faire pareil, à ton rythme", P(500, 40), DARK); bouton(475)
 elif VAR == "melange":
-    center(100, "AIDE-SOIGNANTE & COACH EN RÉÉQUILIBRAGE ALIMENTAIRE", P(500, 26), (150, 80, 100))
+    center(100, "COACH EN RÉÉQUILIBRAGE ALIMENTAIRE", P(500, 28), (150, 80, 100))
     brush(185, "10 kg perdus, jamais repris", 60); brush(272, "même avec mes horaires de nuit", 52)
     center(355, "Je t’aide à faire pareil :", P(500, 32), DARK)
     items = ["Sans régime", "Sans frustration", "Adapté à ton rythme"]; f = P(500, 28)
