@@ -30,7 +30,7 @@ canvas = ban.crop(((ban.width - W) // 2, (ban.height - H) // 2, (ban.width - W) 
 d = ImageDraw.Draw(canvas, "RGBA"); cx = 1100
 def center(y, txt, f, col): d.text((cx, y), txt, font=f, fill=col, anchor="mm")
 center(110, "COACH EN RÉÉQUILIBRAGE ALIMENTAIRE", P(500, 28), (150, 80, 100))
-for y, t in [(205, "Perds jusqu’à 10 kg en 3 mois"), (300, "sans te priver")]:
+for y, t in [(205, "Perds jusqu’à 10 kg en 3 mois"), (300, "sans te prendre la tête")]:
     f = L(64); tw = d.textlength(t, font=f)
     d.rounded_rectangle((cx - tw / 2 - 28, y - 32, cx + tw / 2 + 28, y + 42), 30, fill=PINKBRUSH)
     center(y, t, f, WINE)
