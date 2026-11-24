@@ -29,13 +29,37 @@ s = max(W / bw, H / bh); ban = ban.resize((int(bw * s) + 1, int(bh * s) + 1), Im
 canvas = ban.crop(((ban.width - W) // 2, (ban.height - H) // 2, (ban.width - W) // 2 + W, (ban.height - H) // 2 + H))
 d = ImageDraw.Draw(canvas, "RGBA"); cx = 1100
 def center(y, txt, f, col): d.text((cx, y), txt, font=f, fill=col, anchor="mm")
-center(110, "COACH EN RÉÉQUILIBRAGE ALIMENTAIRE", P(500, 28), (150, 80, 100))
-for y, t in [(205, "Perds jusqu’à 10 kg en 3 mois"), (300, "sans te prendre la tête")]:
-    f = L(64); tw = d.textlength(t, font=f)
+VAR = sys.argv[3] if len(sys.argv) > 3 else "promesse"
+def brush(y, t, size=64):
+    f = L(size); tw = d.textlength(t, font=f)
     d.rounded_rectangle((cx - tw / 2 - 28, y - 32, cx + tw / 2 + 28, y + 42), 30, fill=PINKBRUSH)
     center(y, t, f, WINE)
-center(392, "même avec une vie de dingue", P(500, 42), DARK)
-btn = "Écris-moi « DÉCLIC » en message"; f = P(600, 32); tw = d.textlength(btn, font=f)
-d.rounded_rectangle((cx - tw / 2 - 36, 455, cx + tw / 2 + 36, 519), 32, fill=BTN)
-center(487, btn, f, (255, 255, 255))
+def bouton(y, txt="Écris-moi « DÉCLIC » en message"):
+    f = P(600, 32); tw = d.textlength(txt, font=f)
+    d.rounded_rectangle((cx - tw / 2 - 36, y - 32, cx + tw / 2 + 36, y + 32), 32, fill=BTN)
+    center(y, txt, f, (255, 255, 255))
+def check(x, y):
+    d.ellipse((x - 17, y - 17, x + 17, y + 17), fill=BTN)
+    d.line((x - 8, y + 1, x - 2, y + 8, x + 9, y - 7), fill=(255, 255, 255), width=5, joint="curve")
+if VAR == "promesse":
+    center(110, "COACH EN RÉÉQUILIBRAGE ALIMENTAIRE", P(500, 28), (150, 80, 100))
+    brush(205, "Perds jusqu’à 10 kg en 3 mois"); brush(300, "sans te prendre la tête")
+    center(392, "même avec une vie de dingue", P(500, 42), DARK); bouton(487)
+elif VAR == "question":
+    center(120, "Tu as déjà TOUT essayé pour perdre du poids ?", P(500, 38), DARK)
+    brush(215, "Et si le problème,"); brush(305, "c’était la méthode ?")
+    center(395, "Rééquilibrage alimentaire adapté à TA vie, sans frustration", P(300, 30), DARK); bouton(475)
+elif VAR == "soignante":
+    center(110, "AIDE-SOIGNANTE & COACH EN RÉÉQUILIBRAGE ALIMENTAIRE", P(500, 26), (150, 80, 100))
+    brush(200, "10 kg perdus, jamais repris", 62); brush(292, "même avec mes horaires de nuit", 56)
+    center(385, "Je t’aide à faire pareil, à ton rythme", P(500, 40), DARK); bouton(475)
+elif VAR == "checklist":
+    center(115, "COACH EN RÉÉQUILIBRAGE ALIMENTAIRE", P(500, 28), (150, 80, 100))
+    brush(205, "Perds jusqu’à 10 kg en 3 mois", 62)
+    items = ["Sans régime", "Sans frustration", "Adapté à ton rythme"]; f = P(500, 28)
+    widths = [d.textlength(t, font=f) + 48 for t in items]; gap = 26
+    x = cx - (sum(widths) + gap * 2) / 2
+    for t, w in zip(items, widths):
+        check(x + 17, 315); d.text((x + 45, 315), t, font=f, fill=DARK, anchor="lm"); x += w + gap
+    bouton(430)
 canvas.save(OUT)
