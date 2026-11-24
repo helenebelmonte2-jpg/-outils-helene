@@ -74,6 +74,14 @@ Docs business : contrat, mail de bienvenue, questionnaire de profil alimentaire,
 | Samedi | Lifestyle |
 | Dimanche | Boîte à questions |
 
+Règles des stories qui marchent (à appliquer) :
+- **Style natif Instagram** (texte sur fond coloré ou sur sa vidéo, comme l'outil texte d'Instagram), plutôt que des visuels « templates » trop graphiques.
+- **1 idée par story**, à lire en 3 secondes (20 mots maximum).
+- **Interaction sur chaque série** : quiz Vrai/Faux sur l'idée reçue, puis réponse sur la story suivante (effet suspense, et les réponses boostent la portée).
+- Face caméra dès que possible (elle filme la réponse « En réalité… »).
+- 5 à 8 stories par jour maximum, avec un CTA « écris-moi DÉCLIC » en message.
+- Idées reçues encore inutilisées pour les prochains mardis : « Il faut supprimer le pain et les féculents », « Il faut faire beaucoup de sport pour perdre du poids ».
+
 ## Contenus déjà créés (à retrouver quand elle les redemande)
 | Date | Contenu | Dans le dépôt | Sur le Drive |
 |---|---|---|---|
@@ -81,3 +89,4 @@ Docs business : contrat, mail de bienvenue, questionnaire de profil alimentaire,
 | 23/11/2026 | Story « Marche en pente » (texte incrusté sur la vidéo du tapis) | `contenus/2026-11-23_story_marche_en_pente/` | Pas sur le Drive (fichier trop lourd pour l'envoi) |
 | 23/11/2026 | Story à la une « Qui suis-je » (8 stories, textes seulement) | Textes à réécrire à partir de la section « Parcours d'Hélène » | — |
 | 24/11/2026 | **Stories « Fausse croyance / Vraie croyance »** (7 stories : intro, 5 croyances, CTA DÉCLIC) | `contenus/2026-11-24_stories_fausses_croyances/` (script : `scripts/stories_croyances.py`) | Montage perso → « Stories Fausses croyances (24-11) » |
+| 24/11/2026 | **Stories « On dit souvent que… » v2** (style natif, 3 idées reçues + quiz + CTA, 7 stories) : version recommandée | `contenus/2026-11-24_stories_on_dit_souvent_v2/` (script : `scripts/stories_croyances_v2.py`) | Montage perso → « Stories On dit souvent que v2 (24-11) » |
