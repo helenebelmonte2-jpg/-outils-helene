@@ -72,6 +72,7 @@ Docs business : contrat, mail de bienvenue, questionnaire de profil alimentaire,
 - **Message de bienvenue** (validé par Jonathan) : parler de l'objectif de perte de poids, pas de « se sentir bien dans son corps ». Séquence complète dans `fiches/messages_nouveaux_abonnes.html`.
 - **Parler de perte de poids, pas de prise de masse** : elles veulent perdre leur petit ventre, rentrer dans un 36-38.
 - Outils prévus : Fathom (appels enregistrés, demander un récap à Claude après chaque appel) et Metricool (programmation, dossiers Drive TOFU et MOFU).
+- Idées de titres YouTube suivants (24/11) : « Tu manges peu mais tu ne perds pas de poids ? », « Perdre 10 kg avec des horaires décalés : ma méthode de soignante », « 7 aliments healthy qui t'empêchent de maigrir », « Ce que je mange en une journée pour garder mes 10 kg en moins ».
 - Chiffres à noter chaque semaine : TOFU, MOFU, abonnés gagnés, conversations, appels, ventes.
 
 ## Format MOFU (modèle de Jonathan, Frame.io « Reels voiture 15-11 · 7 reels · V3 morphing », lien https://f.io/heGOYYqn)
@@ -113,3 +114,4 @@ Règles des stories qui marchent (à appliquer) :
 | 24/11/2026 | **6 fiches stories** (une par thème de la semaine : valeur + CTA, On dit souvent que, sur moi, avis, lifestyle, boîte à questions) | `fiches/*.html` (script : `scripts/fiches_stories.py`) | DIVERS PERSO → dossier « Fiches stories » (`1YGYVkiyITIVGaR2EMS9DvDS6qR1mE-Ab`) |
 | 24/11/2026 | **Messages nouveaux abonnés** (bienvenue ×3 variantes, puis problématique, je creuse, valeur, important et urgent, appel, relances) | `fiches/messages_nouveaux_abonnes.html` | DIVERS PERSO → Google Doc « Messages nouveaux abonnés (bienvenue → appel) » |
 | 25/11/2026 (mercredi) | **Stories « Sur moi », version pro** (7 stories natives : « Pourquoi il ne faut pas faire de régime strict pour perdre du poids », soignante, sondage, ma méthode, CTA DÉCLIC). Une 1re version trop perso a été refusée. | `contenus/2026-11-25_stories_mercredi_sur_moi/` (générateur réutilisable : `scripts/stories_natif.py` + `contenu.py`) | Montage perso → « Stories Mercredi sur moi (25-11) » |
+| 24/11/2026 | **Script YouTube « Tu as TOUT essayé pour perdre du poids ? Voici la VRAIE raison »** (hook, 5 raisons, vendre sans vendre, CTA, titre, miniature, description, chapitres, 6 MOFU repérés 🎬) | `scripts_videos/youtube_tout_essaye_vraie_raison.html` | Vidéo YouTube → Google Doc « Script YouTube – Tu as TOUT essayé ? » |
