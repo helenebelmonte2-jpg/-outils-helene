@@ -32,13 +32,27 @@ def hook_line(y, text):
 hook_line(450, h1); hook_line(525, h2)
 bg.save(f"{tmp}/bg.png")
 
-# 2. Transcription mot à mot
-audio = np.frombuffer(subprocess.run(["ffmpeg", "-v", "error", "-ss", str(t0), "-to", str(t1), "-i", src,
+# 2. Transcription mot à mot (ou réutilisation d'une transcription existante : variable WORDS=transcript.json)
+if os.environ.get("WORDS"):
+    import json
+    words = [(w[0] - t0, w[1] - t0, w[2].strip()) for sg in json.load(open(os.environ["WORDS"])) for w in sg["words"]
+             if w[0] >= t0 - 0.05 and w[1] <= t1 + 0.05 and w[2].strip()]
+else:
+  audio = np.frombuffer(subprocess.run(["ffmpeg", "-v", "error", "-ss", str(t0), "-to", str(t1), "-i", src,
     "-f", "s16le", "-ac", "1", "-ar", "16000", "-"], capture_output=True).stdout, np.int16).astype(np.float32) / 32768
-from faster_whisper import WhisperModel
-model = WhisperModel("small", compute_type="int8")
-segs, _ = model.transcribe(audio, language="fr", word_timestamps=True)
-words = [(w.start, w.end, w.word.strip()) for s in segs for w in s.words if w.word.strip()]
+  from faster_whisper import WhisperModel
+  model = WhisperModel("small", compute_type="int8")
+  segs, _ = model.transcribe(audio, language="fr", word_timestamps=True)
+  words = [(w.start, w.end, w.word.strip()) for s in segs for w in s.words if w.word.strip()]
+
+# 2b. Recoller les morceaux de mots coupés par la transcription (« aujourd 'hui », « j 'ai »)
+merged = []
+for w in words:
+    if merged and (w[2][:1] in "'’-" or merged[-1][2][-1:] in "'’"):
+        merged[-1] = (merged[-1][0], w[1], merged[-1][2] + w[2])
+    else:
+        merged.append(w)
+words = [(a, b, t.replace(" '", "'")) for a, b, t in merged]
 
 # 3. Sous-titres : 1 à 2 mots par image (PNG transparents) + liste d'overlays
 chunks, i = [], 0
@@ -52,13 +66,14 @@ for k, (s, e, txt) in enumerate(chunks):
     im = Image.new("RGBA", (500, 80), (0, 0, 0, 0)); dd = ImageDraw.Draw(im)
     key = re.sub(r"[^\wàâäéèêëîïôöùûüç'-]", "", txt.lower())
     col = PINK if any(p in key for p in pinkwords) else WHITE
-    dd.text((250 + 2, 42 + 2), txt, font=FS, fill=(0, 0, 0, 140), anchor="mm")
-    dd.text((250, 42), txt, font=FS, fill=col, anchor="mm")
+    dd.text((250 + 2, 42 + 3), txt, font=FS, fill=(0, 0, 0, 120), anchor="mm")
+    dd.text((250, 42), txt, font=FS, fill=col, anchor="mm", stroke_width=3, stroke_fill=(30, 20, 25, 230))
     im.save(f"{tmp}/s{k}.png"); inputs += ["-i", f"{tmp}/s{k}.png"]
     nxt = chunks[k + 1][0] if k + 1 < len(chunks) else e + 0.3
     filters.append(f"{last}[{k + 2}:v]overlay=530:1015:enable='between(t,{s:.3f},{min(nxt - 0.01, e + 0.6):.3f})'[o{k}]"); last = f"[o{k}]"
 
-fc = (f"[0:v]scale={W}:{VH}:force_original_aspect_ratio=increase,crop={W}:{VH},setsar=1[vid];"
+crop = os.environ.get("CROP")  # ex. "812:530:250:0" pour enlever des sous-titres incrustés
+fc = (f"[0:v]{'crop=' + crop + ',' if crop else ''}scale={W}:{VH}:force_original_aspect_ratio=increase,crop={W}:{VH},setsar=1[vid];"
       f"[1:v][vid]overlay=0:{VY0}[v];" + ";".join(filters))
 cmd = ["ffmpeg", "-v", "error", "-y", "-ss", str(t0), "-to", str(t1), "-i", src, "-loop", "1", "-i", f"{tmp}/bg.png",
        *inputs, "-filter_complex", fc, "-map", last if filters else "[v]", "-map", "0:a?", "-shortest",
