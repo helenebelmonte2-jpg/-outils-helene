@@ -88,7 +88,7 @@ Docs business : contrat, mail de bienvenue, questionnaire de profil alimentaire,
 |---|---|
 | Lundi | Valeur + CTA |
 | Mardi | Fausse croyance → vraie croyance (accroche « On dit souvent que… ») |
-| Mercredi | Sur elle, en lien avec sa niche |
+| Mercredi | Sur elle, en lien avec sa niche : **angle pro, pas trop perso** (son métier de soignante, sa méthode, ses valeurs de coach). Elle préfère ne pas raconter son histoire intime chaque mercredi. |
 | Jeudi | Avis : clientes, amies, entourage… |
 | Vendredi | Valeur + CTA |
 | Samedi | Lifestyle |
@@ -112,4 +112,4 @@ Règles des stories qui marchent (à appliquer) :
 | 24/11/2026 | **Stories « On dit souvent que… » v2** (style natif, 3 idées reçues + quiz + CTA, 7 stories) : version recommandée | `contenus/2026-11-24_stories_on_dit_souvent_v2/` (script : `scripts/stories_croyances_v2.py`) | Montage perso → « Stories On dit souvent que v2 (24-11) » |
 | 24/11/2026 | **6 fiches stories** (une par thème de la semaine : valeur + CTA, On dit souvent que, sur moi, avis, lifestyle, boîte à questions) | `fiches/*.html` (script : `scripts/fiches_stories.py`) | DIVERS PERSO → dossier « Fiches stories » (`1YGYVkiyITIVGaR2EMS9DvDS6qR1mE-Ab`) |
 | 24/11/2026 | **Messages nouveaux abonnés** (bienvenue ×3 variantes, puis problématique, je creuse, valeur, important et urgent, appel, relances) | `fiches/messages_nouveaux_abonnes.html` | DIVERS PERSO → Google Doc « Messages nouveaux abonnés (bienvenue → appel) » |
-| 25/11/2026 (mercredi) | **Stories « Sur moi » : la peur de manger** (7 stories natives : hook, ado, coachs, sondage, déclic, 10 kg, CTA « écris-moi MOI ») | `contenus/2026-11-25_stories_mercredi_sur_moi/` (générateur réutilisable : `scripts/stories_natif.py` + `contenu.py`) | Montage perso → « Stories Mercredi sur moi (25-11) » |
+| 25/11/2026 (mercredi) | **Stories « Sur moi », version pro** (7 stories natives : « Pourquoi je ne donne jamais de programme strict », soignante, sondage, ma méthode, CTA DÉCLIC). Une 1re version trop perso a été refusée. | `contenus/2026-11-25_stories_mercredi_sur_moi/` (générateur réutilisable : `scripts/stories_natif.py` + `contenu.py`) | Montage perso → « Stories Mercredi sur moi (25-11) » |
