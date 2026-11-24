@@ -74,6 +74,15 @@ Docs business : contrat, mail de bienvenue, questionnaire de profil alimentaire,
 - Outils prévus : Fathom (appels enregistrés, demander un récap à Claude après chaque appel) et Metricool (programmation, dossiers Drive TOFU et MOFU).
 - Chiffres à noter chaque semaine : TOFU, MOFU, abonnés gagnés, conversations, appels, ventes.
 
+## Format MOFU (modèle de Jonathan, Frame.io « Reels voiture 15-11 · 7 reels · V3 morphing », lien https://f.io/heGOYYqn)
+- Durée 45 s à 1 min 30. Vertical 1080x1920, **fond noir**.
+- **Vidéo horizontale (16:9) pleine largeur au centre**, d'environ y=607 à 1325 (image d'exemple : `modeles/format_mofu_jonathan_exemple.png`).
+- **Hook texte fixe pendant tout le Reel**, au-dessus de la vidéo (~y 460-570) : blanc, gras (type Montserrat Bold ~44 px), centré, **2 lignes**, se termine par « : ». Ex. : « Tu n'arrives pas à vendre ? / Le problème n'est pas ton closing : ».
+- **Sous-titres mot à mot** (1 à 2 mots à la fois), blancs, police medium ~40 px, **dans la vidéo, à droite du visage** (~x 660-870, y ~1050), sans fond.
+- Rien en bas de l'écran (zone noire vide).
+- Source : ses vidéos YouTube. **Ne pas utiliser sa dernière vidéo YouTube** (celle où elle est dans une bulle en bas à gauche).
+- Les MOFU finis vont dans un dossier Drive « MOFU » (et les TOFU dans « TOFU »).
+
 ## Stratégie stories (sa stratégie, à suivre chaque semaine)
 | Jour | Thème |
 |---|---|
