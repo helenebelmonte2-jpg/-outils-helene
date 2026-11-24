@@ -90,3 +90,4 @@ Règles des stories qui marchent (à appliquer) :
 | 23/11/2026 | Story à la une « Qui suis-je » (8 stories, textes seulement) | Textes à réécrire à partir de la section « Parcours d'Hélène » | — |
 | 24/11/2026 | **Stories « Fausse croyance / Vraie croyance »** (7 stories : intro, 5 croyances, CTA DÉCLIC) | `contenus/2026-11-24_stories_fausses_croyances/` (script : `scripts/stories_croyances.py`) | Montage perso → « Stories Fausses croyances (24-11) » |
 | 24/11/2026 | **Stories « On dit souvent que… » v2** (style natif, 3 idées reçues + quiz + CTA, 7 stories) : version recommandée | `contenus/2026-11-24_stories_on_dit_souvent_v2/` (script : `scripts/stories_croyances_v2.py`) | Montage perso → « Stories On dit souvent que v2 (24-11) » |
+| 24/11/2026 | **Fiche « Stories lifestyle (samedi) »** (idées, samedi type, règles, rappel de la stratégie) | `fiches/stories_lifestyle.html` | DIVERS PERSO → Google Doc « Fiche – Stories lifestyle (samedi) » |
