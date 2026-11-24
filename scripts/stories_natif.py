@@ -40,6 +40,8 @@ for i, st in enumerate(STORIES, 1):
     for texte, taille, style, *poids in st["blocs"]:
         f = ImageFont.truetype(FONT[poids[0] if poids else "xb"], taille)
         fg, bgc = STY[style]
+        for a, b in ((" !", "\u00a0!"), (" ?", "\u00a0?"), (" :", "\u00a0:"), (" »", "\u00a0»"), ("« ", "«\u00a0")):
+            texte = texte.replace(a, b)
         for ln in wrap(d, texte, f, 880):
             if not ln:
                 y += taille * 0.6; continue
