@@ -1,0 +1,18 @@
+STORIES = [
+ {"bg": "dark", "blocs": [("Mon accompagnement", 52, "white", "b"),
+                          ("« Oser se choisir »", 84, "pink"),
+                          ("Pour toi si tu es débordée, en horaires décalés, ou si tu as déjà tout essayé… et tout repris.", 46, "white", "b")]},
+ {"bg": "pink", "blocs": [("Jusqu'à 10 kg en 3 mois", 66, "white"),
+                          ("sans te priver", 58, "dark"),
+                          ("Ma méthode des 3 R", 52, "pinktxt"),
+                          ("Révéler · Rééquilibrer · Rayonner", 48, "white")]},
+ {"bg": "pink", "blocs": [("Ce que tu reçois", 60, "pinktxt"),
+                          ("Un plan alimentaire fait pour TA vie", 46, "white"),
+                          ("Des séances de sport maison ou salle", 46, "white"),
+                          ("Un appel avec moi tous les 15 jours", 46, "white"),
+                          ("Un suivi chaque semaine + WhatsApp", 46, "white")]},
+ {"bg": "dark", "blocs": [("Comment on commence ?", 64, "pink"),
+                          ("1. Tu m'écris DÉCLIC", 52, "white"),
+                          ("2. On fait un appel découverte gratuit", 50, "white"),
+                          ("3. Si c'est fait pour toi, on démarre !", 50, "white")]},
+]
