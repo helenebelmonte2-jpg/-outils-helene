@@ -27,16 +27,15 @@ ban = Image.fromarray(cv2.cvtColor(a, cv2.COLOR_BGR2RGB))
 # 2. Mise au format 1640x624
 s = max(W / bw, H / bh); ban = ban.resize((int(bw * s) + 1, int(bh * s) + 1), Image.LANCZOS)
 canvas = ban.crop(((ban.width - W) // 2, (ban.height - H) // 2, (ban.width - W) // 2 + W, (ban.height - H) // 2 + H))
-d = ImageDraw.Draw(canvas, "RGBA"); cx = 1110
+d = ImageDraw.Draw(canvas, "RGBA"); cx = 1100
 def center(y, txt, f, col): d.text((cx, y), txt, font=f, fill=col, anchor="mm")
-center(95, "J’aide les femmes débordées à", P(300, 44), DARK)
-for y, t in [(185, "perdre jusqu’à 10 kg"), (280, "en 90 jours, sans frustration")]:
-    f = L(70); tw = d.textlength(t, font=f)
-    d.rounded_rectangle((cx - tw / 2 - 28, y - 30, cx + tw / 2 + 28, y + 40), 30, fill=PINKBRUSH)
+center(110, "COACH EN RÉÉQUILIBRAGE ALIMENTAIRE", P(500, 28), (150, 80, 100))
+for y, t in [(205, "Perds jusqu’à 10 kg en 3 mois"), (300, "sans te priver")]:
+    f = L(64); tw = d.textlength(t, font=f)
+    d.rounded_rectangle((cx - tw / 2 - 28, y - 32, cx + tw / 2 + 28, y + 42), 30, fill=PINKBRUSH)
     center(y, t, f, WINE)
-center(372, "même avec des horaires décalés", P(500, 40), DARK)
-center(428, "Rééquilibrage alimentaire  ·  Sport  ·  Mental", P(300, 30), DARK)
-btn = "Écris-moi « DÉCLIC » en message"; f = P(600, 30); tw = d.textlength(btn, font=f)
-d.rounded_rectangle((cx - tw / 2 - 34, 475, cx + tw / 2 + 34, 535), 30, fill=BTN)
-center(505, btn, f, (255, 255, 255))
+center(392, "même avec une vie de dingue", P(500, 42), DARK)
+btn = "Écris-moi « DÉCLIC » en message"; f = P(600, 32); tw = d.textlength(btn, font=f)
+d.rounded_rectangle((cx - tw / 2 - 36, 455, cx + tw / 2 + 36, 519), 32, fill=BTN)
+center(487, btn, f, (255, 255, 255))
 canvas.save(OUT)
