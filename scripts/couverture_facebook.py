@@ -18,6 +18,10 @@ m = np.zeros(a.shape[:2], np.uint8)
 x0, x1 = int(bw * 0.34), int(bw * 0.99); y0, y1 = int(bh * 0.07), int(bh * 0.93)
 m[y0:y1, x0:x1] = 255
 m[int(bh * 0.74):y1, x0:int(bw * 0.40)] = 0   # ne pas toucher au bras
+import os
+PHOTO = os.environ.get("PHOTO")   # photo détourée (PNG transparent) pour remplacer l'ancienne
+if PHOTO:
+    m[:, :] = 0; m[:, : int(bw * 0.99)] = 255
 small = cv2.resize(a, None, fx=0.25, fy=0.25); ms = cv2.resize(m, (small.shape[1], small.shape[0]), interpolation=cv2.INTER_NEAREST)
 inp = cv2.inpaint(small, ms, 12, cv2.INPAINT_TELEA)
 inp = cv2.GaussianBlur(cv2.resize(inp, (bw, bh), interpolation=cv2.INTER_CUBIC), (0, 0), 18)
@@ -27,6 +31,12 @@ ban = Image.fromarray(cv2.cvtColor(a, cv2.COLOR_BGR2RGB))
 # 2. Mise au format 1640x624
 s = max(W / bw, H / bh); ban = ban.resize((int(bw * s) + 1, int(bh * s) + 1), Image.LANCZOS)
 canvas = ban.crop(((ban.width - W) // 2, (ban.height - H) // 2, (ban.width - W) // 2 + W, (ban.height - H) // 2 + H))
+if PHOTO:
+    canvas = canvas.filter(ImageFilter.GaussianBlur(6))
+    pc = Image.open(PHOTO).convert("RGBA"); pc = pc.crop(pc.getbbox())
+    pc = pc.crop((0, 0, pc.width, int(pc.height * 0.62)))      # de la tête à la taille
+    sc = (H * 0.97) / pc.height; pc = pc.resize((int(pc.width * sc), int(pc.height * sc)), Image.LANCZOS)
+    canvas = canvas.convert("RGBA"); canvas.alpha_composite(pc, (40, H - pc.height)); canvas = canvas.convert("RGB")
 d = ImageDraw.Draw(canvas, "RGBA"); cx = 1100
 def center(y, txt, f, col): d.text((cx, y), txt, font=f, fill=col, anchor="mm")
 VAR = sys.argv[3] if len(sys.argv) > 3 else "promesse"
