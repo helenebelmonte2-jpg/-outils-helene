@@ -61,6 +61,7 @@ Docs business : contrat, mail de bienvenue, questionnaire de profil alimentaire,
 - À compléter : vie perso (si elle le souhaite).
 
 ## Règles visuelles
+- Photo envoyée par Hélène le 24/11 (selfie sweat rose, lumière de fenêtre) : `contenus/photos/photo_2026-11-24_sweat_rose.jpg`, recadrage profil `contenus/photos/photo_profil_recadree.jpg` (sans le logo du sweat). Utilisable puisqu'elle l'a choisie.
 - **Ne jamais utiliser une image extraite d'une vidéo comme photo** (carrousel, story…) sans son accord : elle s'est trouvée moche sur la capture du tapis de course. Utiliser uniquement les photos qu'elle choisit et envoie.
 
 ## Coaching Liberty (Jonathan) : points clés du coaching 3 (19/11/2026)
