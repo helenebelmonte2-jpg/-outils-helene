@@ -26,3 +26,18 @@ for y,t in [(445,"Tu as TOUT essayé pour maigrir ?"),(518,"Voici la vraie raiso
 d.text((780,1060),"privation",font=B(44),fill=WHITE,anchor="mm")
 d.text((W/2,1500),"Option B",font=B(40),fill=(90,90,90),anchor="mm")
 im.save("modeles/maquette_mofu_B.png")
+# C : mélange. Hook blanc, mots-clés dans un petit bandeau rose arrondi ; sous-titres blancs, mots importants en rose
+im,d=base(); f=B(46)
+def line_box(y,parts):
+    sp=10; ws=[(t,k,d.textlength(t,font=f)) for t,k in parts]
+    tw=sum(w for _,_,w in ws)+sp*sum(1 for _,k,_ in ws if k)*2; x=(W-tw)/2
+    for t,k,w in ws:
+        if k:
+            x+=sp; d.rounded_rectangle((x-12,y-10,x+w+12,y+58),14,fill=PINK); d.text((x,y),t,font=f,fill=WHITE); x+=w+sp
+        else:
+            d.text((x,y),t,font=f,fill=WHITE); x+=w
+line_box(450,[("Tu as ",0),("TOUT essayé",1),(" pour maigrir ?",0)])
+line_box(525,[("Voici la ",0),("vraie raison",1),(" :",0)])
+d.text((780,1060),"privation",font=B(44),fill=PINK,anchor="mm")
+d.text((W/2,1500),"Option C (mélange)",font=B(40),fill=(90,90,90),anchor="mm")
+im.save("modeles/maquette_mofu_C.png")

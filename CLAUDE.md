@@ -83,7 +83,7 @@ Docs business : contrat, mail de bienvenue, questionnaire de profil alimentaire,
 - Rien en bas de l'écran (zone noire vide).
 - Source : ses vidéos YouTube. **Ne pas utiliser sa dernière vidéo YouTube** (celle où elle est dans une bulle en bas à gauche).
 - Les MOFU finis vont dans un dossier Drive « MOFU » (et les TOFU dans « TOFU »).
-- **Adaptation Hélène (24/11)** : on garde exactement la structure de Jonathan, mais **hooks dans SA niche** (perte de poids, femmes débordées, sans privation) et **touche de rose** (#E8508F). Deux maquettes proposées : A = mots-clés du hook + mot du sous-titre en rose ; B = hook dans un bandeau rose arrondi (`modeles/maquette_mofu_A.png` / `_B.png`, script `scripts/maquette_mofu.py`). Choix d'Hélène : à confirmer.
+- **Adaptation Hélène (24/11)** : on garde exactement la structure de Jonathan, mais **hooks dans SA niche** (perte de poids, femmes débordées, sans privation) et **touche de rose** (#E8508F). Deux maquettes proposées : A = mots-clés du hook + mot du sous-titre en rose ; B = hook dans un bandeau rose arrondi (`modeles/maquette_mofu_A.png` / `_B.png`, script `scripts/maquette_mofu.py`). Option C (mélange : hook blanc avec mots-clés dans un petit bandeau rose, mots importants des sous-titres en rose, `modeles/maquette_mofu_C.png`) proposée le 24/11. Choix d'Hélène : à confirmer.
 
 ## Stratégie stories (sa stratégie, à suivre chaque semaine)
 | Jour | Thème |
