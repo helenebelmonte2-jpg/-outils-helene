@@ -11,7 +11,7 @@ STORIES = [
     ("Mes dîners de la semaine sont prêts", 50, "white"),
     ("On dit que manger le soir fait grossir… Faux : c'est ta journée entière qui compte.", 44, "pink", "b")]},
  {"photo": P + "8_gamelle_muffin.jpg", "y": 230, "blocs": [
-    ("Oui, il y a un muffin au chocolat dans ma gamelle", 52, "white"),
+    ("Oui, il y a des muffins avec ma gamelle", 52, "white"),
     ("Un écart ne fait pas grossir. C'est abandonner qui fait reprendre", 44, "pink", "b")]},
  {"photo": P + "6_selfie_rose.jpg", "y": 1450, "focus": 0.35, "blocs": [
     ("Laquelle tu croyais encore ?", 56, "white"),
