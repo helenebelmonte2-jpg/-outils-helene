@@ -1,5 +1,5 @@
 STORIES = [
- {"bg": "dark", "blocs": [("Pourquoi je ne donne jamais de programme strict à mes clientes", 72, "pink"),
+ {"bg": "dark", "blocs": [("Pourquoi il ne faut pas faire de régime strict pour perdre du poids", 72, "pink"),
                           ("Je t'explique →", 44, "white", "b")]},
  {"bg": "pink", "blocs": [("Je suis aide-soignante.", 64, "white"),
                           ("Horaires décalés, journées à rallonge, repas sur le pouce…\nJe connais par cœur.", 52, "white")]},
