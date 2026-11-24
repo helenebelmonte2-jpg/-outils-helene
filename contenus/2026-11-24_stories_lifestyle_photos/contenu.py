@@ -6,7 +6,7 @@ STORIES = [
  {"photo": P + "3_flans.png", "y": 200, "contain": True, "focus": 0.62, "blocs": [
     ("En réalité…", 60, "pinktxt"),
     ("il faut manger MIEUX", 60, "white"),
-    ("Mes flans maison : œufs, légumes, saumon, thon ou poulet. Ça cale, zéro grignotage.", 44, "white", "b")]},
+    ("Mes flans maison : œufs, légumes, saumon, thon ou poulet… et j'ajoute toujours un féculent à côté. Ça cale, zéro grignotage.", 44, "white", "b")]},
  {"photo": P + "5_flans_four.jpg", "y": 1380, "focus": 0.4, "blocs": [
     ("Mes dîners de la semaine sont prêts", 50, "white"),
     ("On dit que manger le soir fait grossir… Faux : c'est ta journée entière qui compte.", 44, "pink", "b")]},
