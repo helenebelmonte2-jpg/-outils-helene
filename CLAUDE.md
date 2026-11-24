@@ -63,6 +63,17 @@ Docs business : contrat, mail de bienvenue, questionnaire de profil alimentaire,
 ## Règles visuelles
 - **Ne jamais utiliser une image extraite d'une vidéo comme photo** (carrousel, story…) sans son accord : elle s'est trouvée moche sur la capture du tapis de course. Utiliser uniquement les photos qu'elle choisit et envoie.
 
+## Stratégie stories (sa stratégie, à suivre chaque semaine)
+| Jour | Thème |
+|---|---|
+| Lundi | Valeur + CTA |
+| Mardi | Fausse croyance → vraie croyance (accroche « On dit souvent que… ») |
+| Mercredi | Sur elle, en lien avec sa niche |
+| Jeudi | Avis : clientes, amies, entourage… |
+| Vendredi | Valeur + CTA |
+| Samedi | Lifestyle |
+| Dimanche | Boîte à questions |
+
 ## Contenus déjà créés (à retrouver quand elle les redemande)
 | Date | Contenu | Dans le dépôt | Sur le Drive |
 |---|---|---|---|

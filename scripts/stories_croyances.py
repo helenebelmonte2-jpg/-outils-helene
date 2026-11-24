@@ -76,8 +76,8 @@ n = len(MYTHS) + 2
 
 # 1. Intro
 im = Image.new("RGB", (W, H), PINK); d = ImageDraw.Draw(im)
-d.text((W / 2, 520), "PERTE DE POIDS", font=XB(46), fill=(255, 210, 228), anchor="mm")
-y = draw_lines(d, wrap(d, "5 fausses croyances qui te bloquent", XB(104), 900), XB(104), 600, WHITE, lh=1.15)
+d.text((W / 2, 520), "ON DIT SOUVENT QUE…", font=XB(46), fill=(255, 210, 228), anchor="mm")
+y = draw_lines(d, wrap(d, "5 idées reçues qui bloquent ta perte de poids", XB(96), 900), XB(96), 600, WHITE, lh=1.15)
 d.rounded_rectangle((170, y + 70, W - 170, y + 190), 60, fill=WHITE)
 d.text((W / 2, y + 130), "Tu y crois encore ?", font=XB(48), fill=PINK, anchor="mm")
 d.text((W / 2, y + 290), "Tape pour voir  →", font=MD(40), fill=WHITE, anchor="mm")
@@ -89,20 +89,20 @@ for k, (faux, vrai) in enumerate(MYTHS):
     im = Image.new("RGB", (W, H), CREAM); d = ImageDraw.Draw(im)
     d.text((W / 2, 300), f"{k + 1} / {len(MYTHS)}", font=XB(40), fill=SOFT, anchor="mm")
     badge(d, W / 2, 420, False)
-    d.text((W / 2, 520), "FAUSSE CROYANCE", font=XB(40), fill=RED, anchor="mm")
-    y = draw_lines(d, wrap(d, faux, XB(64), 860), XB(64), 590, GREY, strike=RED)
+    d.text((W / 2, 520), "On dit souvent que…", font=XB(46), fill=RED, anchor="mm")
+    y = draw_lines(d, wrap(d, "«\u00a0" + faux.rstrip(".") + "\u00a0»", XB(64), 860), XB(64), 590, GREY, strike=RED)
     top = y + 60
     vl = wrap(d, vrai, XB(54), 820)
     d.rounded_rectangle((70, top, W - 70, top + 270 + len(vl) * 54 * 1.3 + 70), 50, fill=PINK)
     badge(d, W / 2, top + 100, True)
-    d.text((W / 2, top + 200), "VRAIE CROYANCE", font=XB(40), fill=WHITE, anchor="mm")
+    d.text((W / 2, top + 200), "En réalité…", font=XB(46), fill=WHITE, anchor="mm")
     draw_lines(d, wrap(d, vrai, XB(54), 820), XB(54), top + 270, WHITE, accent=DARK, lh=1.3)
     footer(d, k + 1, n)
     im.save(os.path.join(OUT, f"story_{k + 2:02d}.png"))
 
 # 7. CTA
 im = Image.new("RGB", (W, H), PINK); d = ImageDraw.Draw(im)
-y = draw_lines(d, wrap(d, "Laquelle tu croyais encore ?", XB(88), 880), XB(88), 480, WHITE, lh=1.15)
+y = draw_lines(d, wrap(d, "Laquelle on t'a déjà dite ?", XB(88), 880), XB(88), 480, WHITE, lh=1.15)
 d.text((W / 2, y + 60), "Réponds-moi en message, je lis tout", font=MD(40), fill=WHITE, anchor="mm")
 box = y + 180
 d.rounded_rectangle((110, box, W - 110, box + 330), 50, fill=WHITE)
