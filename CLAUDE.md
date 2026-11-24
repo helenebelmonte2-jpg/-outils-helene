@@ -63,6 +63,17 @@ Docs business : contrat, mail de bienvenue, questionnaire de profil alimentaire,
 ## Règles visuelles
 - **Ne jamais utiliser une image extraite d'une vidéo comme photo** (carrousel, story…) sans son accord : elle s'est trouvée moche sur la capture du tapis de course. Utiliser uniquement les photos qu'elle choisit et envoie.
 
+## Coaching Liberty (Jonathan) : points clés du coaching 3 (19/11/2026)
+- **Priorité n° 1 : les appels.** Viser 2-3 appels de plus par semaine, avec les personnes qui interagissent.
+- **Contenu : 1 TOFU + 1 MOFU par jour.** MOFU = vidéos de 45 s à 1 min 30 de valeur, découpées dans ses vidéos YouTube (modèle de reels envoyé par Jonathan, style Alex Lavrie).
+- **Bio** : jamais de lien Calendly. Promesse + CTA vers sa vidéo YouTube. Calendly seulement en privé.
+- **Stories** : toujours un hook en 1re story. Montrer son style de vie (sport, assiette, batch cooking du dimanche). Préciser que la marche suffit pour perdre du poids. Sondages, puis conversations avec celles qui répondent.
+- **Prospection, dans l'ordre** : commentaires MOFU, réponses aux stories, nouveaux abonnés, relances. Trame : problématique → je creuse → valeur → important et urgent → appel.
+- **Message de bienvenue** (validé par Jonathan) : parler de l'objectif de perte de poids, pas de « se sentir bien dans son corps ». Séquence complète dans `fiches/messages_nouveaux_abonnes.html`.
+- **Parler de perte de poids, pas de prise de masse** : elles veulent perdre leur petit ventre, rentrer dans un 36-38.
+- Outils prévus : Fathom (appels enregistrés, demander un récap à Claude après chaque appel) et Metricool (programmation, dossiers Drive TOFU et MOFU).
+- Chiffres à noter chaque semaine : TOFU, MOFU, abonnés gagnés, conversations, appels, ventes.
+
 ## Stratégie stories (sa stratégie, à suivre chaque semaine)
 | Jour | Thème |
 |---|---|
@@ -91,3 +102,4 @@ Règles des stories qui marchent (à appliquer) :
 | 24/11/2026 | **Stories « Fausse croyance / Vraie croyance »** (7 stories : intro, 5 croyances, CTA DÉCLIC) | `contenus/2026-11-24_stories_fausses_croyances/` (script : `scripts/stories_croyances.py`) | Montage perso → « Stories Fausses croyances (24-11) » |
 | 24/11/2026 | **Stories « On dit souvent que… » v2** (style natif, 3 idées reçues + quiz + CTA, 7 stories) : version recommandée | `contenus/2026-11-24_stories_on_dit_souvent_v2/` (script : `scripts/stories_croyances_v2.py`) | Montage perso → « Stories On dit souvent que v2 (24-11) » |
 | 24/11/2026 | **6 fiches stories** (une par thème de la semaine : valeur + CTA, On dit souvent que, sur moi, avis, lifestyle, boîte à questions) | `fiches/*.html` (script : `scripts/fiches_stories.py`) | DIVERS PERSO → dossier « Fiches stories » (`1YGYVkiyITIVGaR2EMS9DvDS6qR1mE-Ab`) |
+| 24/11/2026 | **Messages nouveaux abonnés** (bienvenue ×3 variantes, puis problématique, je creuse, valeur, important et urgent, appel, relances) | `fiches/messages_nouveaux_abonnes.html` | DIVERS PERSO → Google Doc « Messages nouveaux abonnés (bienvenue → appel) » |
