@@ -35,8 +35,11 @@ ITEMS = [
  ("ŒUF", 4.85, 5.5, 35.7, 36.57, True, "", 68.6),
  ("SMOOTHIE", 6.14, 7.68, 39.2, 39.99, False, "", 37.6),
  ("AVOCAT", 8.32, 9.03, 44.9, 46.85, True, "Mais attention à la quantité", 70.0),
- ("FROMAGE BLANC", 10.05, 10.98, 50.85, 51.8, True, "", 18.2),
- ("GALETTE DE RIZ", 11.82, 12.7, 59.4, 62.74, False, "Ça n'a pas d'intérêt, ça ne cale vraiment pas", 9.0),
+ # Fromage blanc : sur son « Autorisé » (50.85) elle tourne la tête les yeux fermés → on reprend celui du riz blanc (face caméra)
+ ("FROMAGE BLANC", 10.05, 10.98, 68.15, 68.95, True, "", 18.2),
+ # Galette : au début de son « Pas autorisé » elle lève la tête et tourne les yeux → on prend le « Pas autorisé » du jus
+ # d'orange (face caméra), puis la suite de sa vraie réponse « ça n'a pas d'intérêt… »
+ ("GALETTE DE RIZ", 11.82, 12.7, [(21.70, 22.50), (60.30, 62.74)], None, False, "Ça n'a pas d'intérêt, ça ne cale vraiment pas", 9.0),
  ("RIZ BLANC", 13.51, 14.27, 68.15, 68.95, True, "", 8.0),
  # Salade : dans la vidéo, il n'y a pas de « pas autorisé » après « riz blanc » → on reprend celui du smoothie (39.2), avec un peu de temps après
  ("SALADE COMPOSÉE DU COMMERCE", 15.03, 16.94, 39.2, 40.5, False, "", 17.6),
@@ -177,7 +180,9 @@ hook = overlay("hook", lambda d: None)
 for k, (food, v0, v1, a0, a1, ok, note, l0) in enumerate(ITEMS, 1):
     q = overlay(f"q{k}", lambda d: None, food=food)
     clips.append(clip(len(clips), pick_listen(v1 - v0), v1 - v0, q, ("vo", v0)))
-    clips.append(clip(len(clips), a0, a1 - a0, overlay(f"a{k}", lambda d: None, food=food), ("base", a0)))
+    ov = overlay(f"a{k}", lambda d: None, food=food)
+    for s0, s1 in (a0 if isinstance(a0, list) else [(a0, a1)]):      # une réponse peut être faite de plusieurs morceaux
+        clips.append(clip(len(clips), s0, s1 - s0, ov, ("base", s0)))
 # Outro : la voix off (« et t'abonner à mon compte »), puis ta réponse
 # Outro : sans la voix off « et t'abonner à mon compte », directement ta phrase
 def profil_card(im, cy=1340, w=980):

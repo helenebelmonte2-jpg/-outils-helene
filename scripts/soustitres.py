@@ -28,6 +28,17 @@ for i, t in enumerate(times):
         prev = next((times[j][1] for j in range(i - 1, -1, -1) if times[j]), 0.0)
         nxt = next((times[j][0] for j in range(i + 1, len(times)) if times[j]), prev + 0.4)
         times[i] = (prev, max(prev + 0.15, nxt))
+# Les temps de la transcription sont parfois en avance : un sous-titre ne commence jamais avant que la voix commence
+hop = 160; env = np.array([np.sqrt(np.mean(a[k:k + hop] ** 2)) for k in range(0, len(a) - hop, hop)])
+voice = 20 * np.log10(env + 1e-9) > -38
+def snap(t):
+    k = int(t * 100)
+    if k < len(voice) and voice[k]: return t
+    for j in range(k, min(len(voice), k + 70)):
+        if voice[j]: return j / 100
+    return t
+for i, (st, en) in enumerate(times):
+    st2 = snap(st); times[i] = (st2, max(en, st2 + 0.15))
 # Groupes de 1 à 3 mots (coupure sur la ponctuation et les pauses)
 chunks, cur = [], []
 for i, w in enumerate(words):
