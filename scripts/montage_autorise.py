@@ -46,11 +46,15 @@ def clip(i, src_t0, src_t1, png, audio="base", vo=None):
     out = f"{T}/c{i:02d}.mp4"; dur = src_t1 - src_t0
     vf = f"[0:v]scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},setsar=1,fps=30[v];[v][1:v]overlay=0:0[vo]"
     cmd = ["ffmpeg", "-v", "error", "-y", "-ss", str(src_t0), "-t", str(dur), "-i", BASE, "-i", png]
+    CLEAN = "highpass=f=90,lowpass=f=9000,afftdn=nr=20:nf=-30,agate=threshold=0.02:ratio=8:attack=5:release=180,loudnorm=I=-16:TP=-1.5"
     if audio == "vo":
         cmd += ["-ss", str(vo[0]), "-t", str(dur), "-i", VO]
-        af = "[2:a]loudnorm=I=-16:TP=-1.5,apad[a]"
+        af = f"[2:a]{CLEAN},apad[a]"
+    elif audio == "mute":
+        cmd += ["-f", "lavfi", "-t", str(dur), "-i", "anullsrc=r=48000:cl=stereo"]
+        af = "[2:a]anull[a]"
     else:
-        af = "[0:a]highpass=f=80,loudnorm=I=-16:TP=-1.5,apad[a]"
+        af = f"[0:a]{CLEAN},apad[a]"
     cmd += ["-filter_complex", vf + ";" + af, "-map", "[vo]", "-map", "[a]", "-t", str(dur),
             "-c:v", "libx264", "-preset", "medium", "-crf", "23", "-pix_fmt", "yuv420p", "-c:a", "aac", "-ar", "48000", "-ac", "2", out]
     subprocess.run(cmd, check=True); return out
@@ -59,7 +63,7 @@ clips = []
 # Hook
 hook = overlay("hook", lambda d: (box_text(d, 190, "Pour perdre du poids…", BD(52), DARK, WHITE),
                                   box_text(d, 300, "AUTORISÉ ou PAS AUTORISÉ ?", XB(78), WHITE, PINK)))
-clips.append(clip(0, 17.5, 20.0, hook))
+clips.append(clip(0, 17.5, 20.0, hook, audio="mute"))   # début sans le bruit de fond
 for k, (food, v0, v1, a0, a1, ok, note) in enumerate(ITEMS, 1):
     d_vo = v1 - v0
     q = overlay(f"q{k}", lambda d, food=food: box_text(d, 200, food, XB(92), WHITE, PINK))
@@ -71,7 +75,9 @@ for k, (food, v0, v1, a0, a1, ok, note) in enumerate(ITEMS, 1):
     clips.append(clip(len(clips), a0, a1, overlay(f"a{k}", ans)))
 # Outro : la voix off (« et t'abonner à mon compte »), puis ta réponse
 # Outro : sans la voix off « et t'abonner à mon compte », directement ta phrase
-clips.append(clip(len(clips), OUTRO[0], OUTRO[1], overlay("oa", lambda d: box_text(d, 200, "Abonne-toi à @helene_belmonte", XB(70), WHITE, PINK))))
+oa = overlay("oa", lambda d: box_text(d, 200, "Abonne-toi à @helene_belmonte", XB(70), WHITE, PINK))
+clips.append(clip(len(clips), OUTRO[0], OUTRO[1], oa))
+clips.append(clip(len(clips), 88.0, 90.5, oa))   # « … de conseils » (on saute le blanc au milieu)
 lst = f"{T}/list.txt"; open(lst, "w").write("".join(f"file '{c}'\n" for c in clips))
 subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", lst, "-c", "copy", "-movflags", "+faststart", OUT], check=True)
 print("OK", OUT)
