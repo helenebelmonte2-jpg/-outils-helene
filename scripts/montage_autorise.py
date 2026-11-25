@@ -38,7 +38,8 @@ ITEMS = [
  ("FROMAGE BLANC", 10.05, 10.98, 50.85, 51.8, True, "", 18.2),
  ("GALETTE DE RIZ", 11.82, 12.7, 59.4, 62.74, False, "Ça n'a pas d'intérêt, ça ne cale vraiment pas", 9.0),
  ("RIZ BLANC", 13.51, 14.27, 68.15, 68.95, True, "", 8.0),
- ("SALADE COMPOSÉE DU COMMERCE", 15.03, 16.94, 69.7, 70.9, False, "", 17.6),
+ # Salade : dans la vidéo, il n'y a pas de « pas autorisé » après « riz blanc » → on reprend celui du smoothie (39.2), avec un peu de temps après
+ ("SALADE COMPOSÉE DU COMMERCE", 15.03, 16.94, 39.2, 40.5, False, "", 17.6),
 ]
 OUTRO_VO = (16.6, 19.4); OUTRO = (83.7, 86.05)
 
@@ -66,6 +67,25 @@ def overlay(name, draw, food=None):
     d = ImageDraw.Draw(im); draw_hook(d); draw(d)
     p = f"{T}/{name}.png"; im.save(p); return p
 
+def clean_track(src, name):
+    """Débruitage + volume réglé UNE fois sur toute la piste (avant : réglé clip par clip, ce qui
+    faisait monter le bruit de fond dans les passages sans parole). Entre les phrases : bruit baissé de 30 dB, avec fondus."""
+    import re
+    raw = f"{T}/{name}_raw.wav"; out = f"{T}/{name}.wav"
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", src, "-vn", "-af", "highpass=f=80,afftdn=nr=12:nf=-40:tn=1,loudnorm=I=-16:TP=-1.5",
+                    "-ar", "48000", "-ac", "2", raw], check=True)
+    log = subprocess.run(["ffmpeg", "-i", raw, "-af", "silencedetect=n=-42dB:d=0.35", "-f", "null", "-"], capture_output=True, text=True).stderr
+    st = [float(x) for x in re.findall(r"silence_start: ([\d.]+)", log)]; en = [float(x) for x in re.findall(r"silence_end: ([\d.]+)", log)]
+    expr = []
+    for a, b in zip(st, en + [1e6]):
+        a, b = a + 0.12, b - 0.12          # on garde 0,12 s autour de la voix
+        if b - a > 0.1: expr.append(f"between(t,{a:.3f},{b:.3f})")
+    vol = f"volume='if({'+'.join(expr) or '0'},0.03,1)':eval=frame" if expr else "anull"
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", raw, "-af", vol, out], check=True)
+    return out
+
+BASE_A = clean_track(BASE, "base_clean"); VO_A = clean_track(VO, "vo_clean")
+
 def clip(i, src_t0, src_t1, png, audio="base", vo=None, freeze=0.0):
     out = f"{T}/c{i:02d}.mp4"; dur = src_t1 - src_t0
     pad = f",tpad=start_mode=clone:start_duration={freeze}" if freeze else ""
@@ -73,17 +93,14 @@ def clip(i, src_t0, src_t1, png, audio="base", vo=None, freeze=0.0):
     cmd = ["ffmpeg", "-v", "error", "-y", "-ss", str(src_t0 + freeze), "-t", str(dur), "-i", BASE, "-i", png]
     if freeze:
         cmd += ["-ss", str(src_t0), "-t", str(dur), "-i", BASE]
-    CLEAN = "highpass=f=80,afftdn=nr=8:nf=-40:tn=1,loudnorm=I=-16:TP=-1.5"   # débruitage doux, sans « gate » (sinon la voix sonne coupée)
+    n = 3 if freeze else 2       # index de l'entrée audio
     if audio == "vo":
-        cmd += ["-ss", str(vo[0]), "-t", str(dur), "-i", VO]
-        af = f"[2:a]{CLEAN},afade=t=in:d=0.04,apad[a]"
+        cmd += ["-ss", str(vo[0]), "-t", str(dur), "-i", VO_A]
     elif audio == "mute":
         cmd += ["-f", "lavfi", "-t", str(dur), "-i", "anullsrc=r=48000:cl=stereo"]
-        af = "[2:a]anull[a]"
-    elif freeze:
-        af = f"[2:a]{CLEAN},afade=t=in:d=0.04,afade=t=out:st={max(dur-0.06,0):.3f}:d=0.06,apad[a]"
     else:
-        af = f"[0:a]{CLEAN},afade=t=in:d=0.04,afade=t=out:st={max(dur-0.06,0):.3f}:d=0.06,apad[a]"
+        cmd += ["-ss", str(src_t0), "-t", str(dur), "-i", BASE_A]
+    af = f"[{n}:a]afade=t=in:d=0.04,afade=t=out:st={max(dur-0.06,0):.3f}:d=0.06,apad[a]"
     cmd += ["-filter_complex", vf + ";" + af, "-map", "[vo]", "-map", "[a]", "-t", str(dur),
             "-c:v", "libx264", "-preset", "medium", "-crf", "23", "-pix_fmt", "yuv420p", "-c:a", "aac", "-ar", "48000", "-ac", "2", out]
     subprocess.run(cmd, check=True); return out
