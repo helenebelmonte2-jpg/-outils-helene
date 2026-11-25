@@ -155,7 +155,7 @@ def clip(i, vt0, dur, png, audio):
 clips = []
 # Hook (muet, sans bruit de fond)
 hook = overlay("hook", lambda d: None)
-clips.append(clip(0, pick_listen(2.5), 2.5, hook, "mute"))
+# 25/11 : Hélène veut que la vidéo démarre plus tôt → plus d'intro muette, on commence directement par « Jus d'orange »
 for k, (food, v0, v1, a0, a1, ok, note, l0) in enumerate(ITEMS, 1):
     q = overlay(f"q{k}", lambda d: None, food=food)
     clips.append(clip(len(clips), pick_listen(v1 - v0), v1 - v0, q, ("vo", v0)))
