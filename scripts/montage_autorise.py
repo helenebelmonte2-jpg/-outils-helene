@@ -94,6 +94,17 @@ def bad_frame(d):
     return d is None or d["blink"] > 0.3 or d["side"] > 0.5 or d["yaw"] < -17 or d["yaw"] > 10 or d["down"] > 0.78
 BAD = [bad_frame(d) for _, d in FACE]
 BAD = [any(BAD[max(0, k - 2):k + 3]) for k in range(len(BAD))]      # marge de 2 images autour
+# Quand elle PARLE, on ne fige jamais l'image (sinon la bouche ne suit plus la voix, retour d'Hélène 25/11)
+def speaking_frames():
+    import numpy as np
+    a = np.frombuffer(subprocess.run(["ffmpeg", "-v", "error", "-i", BASE, "-vn", "-ac", "1", "-ar", "16000", "-f", "s16le", "-"],
+                                     capture_output=True).stdout, np.int16).astype(np.float32) / 32768
+    hop = 16000 // FFPS; n = len(a) // hop
+    rms = [20 * np.log10(np.sqrt(np.mean(a[k * hop:(k + 1) * hop] ** 2)) + 1e-9) for k in range(n)]
+    sp = [r > -42 for r in rms]
+    return [any(sp[max(0, k - 4):k + 5]) for k in range(n)]           # marge de 4 images (~0,13 s)
+SPEAK = speaking_frames()
+BAD = [b and not (k < len(SPEAK) and SPEAK[k]) for k, b in enumerate(BAD)]
 
 def frame_plan(t0, dur):
     """Liste de (image source de début, image source de fin, nb d'images figées après) : chaque
@@ -131,24 +142,31 @@ def pick_listen(dur):
 
 def clip(i, vt0, dur, png, audio):
     """vt0 = début de l'image dans la vidéo ; audio = ("base", t) | ("vo", t) | "mute"."""
-    out = f"{T}/c{i:02d}.mp4"
+    out = f"{T}/c{i:02d}.mp4"; dur = round(dur * FFPS) / FFPS     # durée = nombre entier d'images (pas de dérive son / image)
     runs, lead = frame_plan(vt0, dur)
     f0 = round(vt0 * FFPS)
     parts = []; g = f"[0:v]scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},setsar=1,fps={FFPS},split={len(runs)}" + "".join(f"[s{j}]" for j in range(len(runs)))
     for j, (a, b, hold) in enumerate(runs):
-        lp = f",tpad=start_mode=clone:start={lead}" if j == 0 and lead else ""
-        hp = f",tpad=stop_mode=clone:stop={hold}" if hold else ""
-        parts.append(f"[s{j}]trim=start_frame={a - f0}:end_frame={b - f0 + 1},setpts=PTS-STARTPTS{lp}{hp}[r{j}]")
+        # UN SEUL tpad (deux tpad à la suite : ffmpeg perd le premier → image plus courte que le son = décalage des lèvres)
+        opts = ([f"start_mode=clone:start={lead}"] if j == 0 and lead else []) + ([f"stop_mode=clone:stop={hold}"] if hold else [])
+        tp = (",tpad=" + ":".join(opts)) if opts else ""
+        parts.append(f"[s{j}]trim=start_frame={a - f0}:end_frame={b - f0 + 1},setpts=PTS-STARTPTS{tp}[r{j}]")
     vf = g + ";" + ";".join(parts) + ";" + "".join(f"[r{j}]" for j in range(len(runs))) + f"concat=n={len(runs)}:v=1:a=0[v];[v][1:v]overlay=0:0[vo]"
     cmd = ["ffmpeg", "-v", "error", "-y", "-ss", f"{vt0:.3f}", "-t", f"{dur + 0.2:.3f}", "-i", BASE, "-i", png]
     if audio == "mute":
         cmd += ["-f", "lavfi", "-t", str(dur), "-i", "anullsrc=r=48000:cl=stereo"]
     else:
-        cmd += ["-ss", f"{audio[1]:.3f}", "-t", f"{dur:.3f}", "-i", VO_A if audio[0] == "vo" else BASE_A]
-    af = f"[2:a]afade=t=in:d=0.04,afade=t=out:st={max(dur-0.06,0):.3f}:d=0.06,apad[a]"
-    cmd += ["-filter_complex", vf + ";" + af, "-map", "[vo]", "-map", "[a]", "-t", f"{dur:.3f}",
-            "-c:v", "libx264", "-preset", "medium", "-crf", "23", "-pix_fmt", "yuv420p", "-c:a", "aac", "-ar", "48000", "-ac", "2", out]
+        lag = 0.025 if audio[0] == "base" else 0.0    # le nettoyage retarde le son de 25 ms : on compense
+        cmd += ["-ss", f"{audio[1] + lag:.3f}", "-t", f"{dur:.3f}", "-i", VO_A if audio[0] == "vo" else BASE_A]
+    ns = round(dur * 48000)   # nombre exact d'échantillons = durée exacte des images
+    af = f"[2:a]aresample=48000,afade=t=in:d=0.04,afade=t=out:st={max(dur-0.06,0):.3f}:d=0.06,apad,atrim=end_sample={ns}[a]"
+    cmd += ["-filter_complex", vf + ";" + af, "-map", "[vo]", "-frames:v", str(round(dur * FFPS)),
+            "-c:v", "libx264", "-preset", "medium", "-crf", "23", "-pix_fmt", "yuv420p", "-an", out,
+            "-map", "[a]", "-c:a", "pcm_s16le", "-ar", "48000", "-ac", "2", out[:-4] + ".wav"]
     subprocess.run(cmd, check=True)
+    nb = int(subprocess.run(["ffprobe", "-v", "error", "-count_frames", "-select_streams", "v", "-show_entries", "stream=nb_read_frames",
+                             "-of", "csv=p=0", out], capture_output=True, text=True).stdout.strip())
+    assert nb == round(dur * FFPS), f"clip {i} : {nb} images au lieu de {round(dur * FFPS)} (désynchro)"
     print(f"clip {i:02d} image {vt0:.2f}s +{dur:.2f}s, images figées : {lead + sum(r[2] for r in runs)}")
     return out
 
@@ -178,10 +196,13 @@ def outro_png():
     im = Image.new("RGBA", (W, H), (0, 0, 0, 0)); profil_card(im); draw_hook(ImageDraw.Draw(im))
     p = f"{T}/oa.png"; im.save(p); return p
 oa = outro_png()
-# À la fin, elle regarde sur le côté pendant toute sa phrase → on garde SA voix, sur un plan où elle regarde la caméra
+# 25/11 : finalement on garde ses vraies images (bouche synchro avec la voix), même si elle regarde un peu sur le côté
 d1 = OUTRO[1] - OUTRO[0]; d2 = 90.3 - 89.45
-clips.append(clip(len(clips), pick_listen(d1), d1, oa, ("base", OUTRO[0])))
-clips.append(clip(len(clips), pick_listen(d2), d2, oa, ("base", 89.45)))   # « … de conseils »
+clips.append(clip(len(clips), OUTRO[0], d1, oa, ("base", OUTRO[0])))
+clips.append(clip(len(clips), 89.45, d2, oa, ("base", 89.45)))   # « … de conseils »
 lst = f"{T}/list.txt"; open(lst, "w").write("".join(f"file '{c}'\n" for c in clips))
-subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", lst, "-c", "copy", "-movflags", "+faststart", OUT], check=True)
+# Image et son assemblés séparément puis réunis : le son (WAV, au échantillon près) ne peut plus se décaler des lèvres
+lsa = f"{T}/list_a.txt"; open(lsa, "w").write("".join(f"file '{c[:-4]}.wav'\n" for c in clips))
+subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", lst, "-f", "concat", "-safe", "0", "-i", lsa,
+                "-map", "0:v", "-map", "1:a", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", OUT], check=True)
 print("OK", OUT)

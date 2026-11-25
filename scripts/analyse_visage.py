@@ -22,6 +22,6 @@ while True:
     blink = (bs["eyeBlinkLeft"] + bs["eyeBlinkRight"]) / 2
     down = (bs["eyeLookDownLeft"] + bs["eyeLookDownRight"]) / 2
     side = max(bs["eyeLookOutLeft"], bs["eyeLookOutRight"], bs["eyeLookInLeft"], bs["eyeLookInRight"])
-    res.append([t, dict(blink=round(blink, 2), down=round(down, 2), side=round(side, 2), yaw=round(yaw, 1), pitch=round(pitch, 1))])
+    res.append([t, dict(jaw=round(bs["jawOpen"], 3), blink=round(blink, 2), down=round(down, 2), side=round(side, 2), yaw=round(yaw, 1), pitch=round(pitch, 1))])
 json.dump(res, open(out, "w"))
 print(len(res))
