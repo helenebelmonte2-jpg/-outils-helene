@@ -21,7 +21,7 @@ ITEMS = [
  ("FROMAGE BLANC", 9.7, 10.9, 50.7, 52.4, True, ""),
  ("GALETTE DE RIZ", 11.7, 12.7, 59.3, 62.8, False, "Ça n'a pas d'intérêt, ça ne cale vraiment pas"),
  ("RIZ BLANC", 13.3, 14.2, 67.2, 68.9, True, ""),
- ("SALADE COMPOSÉE DU COMMERCE", 15.0, 16.7, 69.7, 71.7, False, ""),
+ ("SALADE COMPOSÉE DU COMMERCE", 15.0, 16.62, 69.7, 71.7, False, ""),
 ]
 OUTRO_VO = (16.6, 19.4); OUTRO = (83.7, 86.2)
 
@@ -67,13 +67,11 @@ for k, (food, v0, v1, a0, a1, ok, note) in enumerate(ITEMS, 1):
     def ans(d, food=food, ok=ok, note=note):
         y = box_text(d, 190, food, XB(70), PINK, WHITE)
         y = box_text(d, y + 30, "AUTORISÉ" if ok else "PAS AUTORISÉ", XB(96), WHITE, GREEN if ok else RED)
-        if note: box_text(d, 1500, note, BD(52), DARK, WHITE)
+        if note: box_text(d, y + 20, note, BD(50), DARK, WHITE)   # sous le verdict, jamais en bas
     clips.append(clip(len(clips), a0, a1, overlay(f"a{k}", ans)))
 # Outro : la voix off (« et t'abonner à mon compte »), puis ta réponse
-dv = OUTRO_VO[1] - OUTRO_VO[0]
-clips.append(clip(len(clips), OUTRO[0] - dv, OUTRO[0], overlay("ov", lambda d: box_text(d, 200, "ET T'ABONNER À MON COMPTE ?", XB(80), WHITE, PINK)), audio="vo", vo=OUTRO_VO))
-clips.append(clip(len(clips), OUTRO[0], OUTRO[1], overlay("oa", lambda d: (box_text(d, 200, "AUTORISÉ !", XB(110), WHITE, GREEN),
-                                                                              box_text(d, 1480, "Abonne-toi à @helene_belmonte", BD(54), DARK, WHITE)))))
+# Outro : sans la voix off « et t'abonner à mon compte », directement ta phrase
+clips.append(clip(len(clips), OUTRO[0], OUTRO[1], overlay("oa", lambda d: box_text(d, 200, "Abonne-toi à @helene_belmonte", XB(70), WHITE, PINK))))
 lst = f"{T}/list.txt"; open(lst, "w").write("".join(f"file '{c}'\n" for c in clips))
 subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", lst, "-c", "copy", "-movflags", "+faststart", OUT], check=True)
 print("OK", OUT)
