@@ -1,7 +1,7 @@
 """Reel « Autorisé ou pas autorisé ? » : voix off (aliment) puis réponse d'Hélène face caméra.
 Usage : python3 montage_autorise.py BASE.mov VOIX.m4a SORTIE.mp4"""
 import sys, os, subprocess, tempfile
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageFilter
 BASE, VO, OUT = sys.argv[1:4]
 W, H = 1080, 1920
 PINK = (232, 80, 143); WHITE = (255, 255, 255); DARK = (43, 34, 40)
@@ -10,6 +10,21 @@ F = "/usr/share/fonts/opentype/inter/"
 XB = lambda s: ImageFont.truetype(F + "Inter-ExtraBold.otf", s)
 BD = lambda s: ImageFont.truetype(F + "Inter-Bold.otf", s)
 T = tempfile.mkdtemp()
+PHOTOS = os.path.join(os.path.dirname(OUT), "photos_aliments")
+FILES = {"JUS D'ORANGE": "jus", "GRANOLA": "granola", "ŒUF": "oeuf", "SMOOTHIE": "smoothie", "AVOCAT": "avocat",
+         "FROMAGE BLANC": "fromage_blanc", "GALETTE DE RIZ": "galette_riz", "RIZ BLANC": "riz_blanc", "SALADE COMPOSÉE DU COMMERCE": "salade_commerce"}
+
+def photo_card(im, food, cy=1130, size=460):
+    """Photo de l'aliment dans une carte blanche arrondie, au niveau du buste (jamais en bas)."""
+    f = os.path.join(PHOTOS, FILES[food] + ".png")
+    if not os.path.exists(f): return
+    ph = Image.open(f).convert("RGB").resize((size, size), Image.LANCZOS).filter(ImageFilter.UnsharpMask(2, 80, 2))
+    x, y = (W - size) // 2, cy - size // 2; pad = 18
+    sh = Image.new("RGBA", (W, H), (0, 0, 0, 0)); ImageDraw.Draw(sh).rounded_rectangle((x - pad + 8, y - pad + 14, x + size + pad + 8, y + size + pad + 14), 44, fill=(0, 0, 0, 90))
+    im.alpha_composite(sh.filter(ImageFilter.GaussianBlur(14)))
+    d = ImageDraw.Draw(im); d.rounded_rectangle((x - pad, y - pad, x + size + pad, y + size + pad), 44, fill=(255, 255, 255, 255))
+    m = Image.new("L", (size, size), 0); ImageDraw.Draw(m).rounded_rectangle((0, 0, size, size), 32, fill=255)
+    im.paste(ph, (x, y), m)
 
 # (aliment, voix off début/fin, réponse début/fin, verdict, précision)
 # (aliment, voix off début/fin, réponse début/fin, verdict, précision, plan d'écoute)
@@ -40,8 +55,10 @@ def box_text(d, y, text, f, fg, bg, maxw=920, pad=26):
         d.text((x, y), ln, font=f, fill=fg); y += f.size * 1.35
     return y
 
-def overlay(name, draw):
-    im = Image.new("RGBA", (W, H), (0, 0, 0, 0)); d = ImageDraw.Draw(im); draw(d)
+def overlay(name, draw, food=None):
+    im = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    if food: photo_card(im, food)
+    d = ImageDraw.Draw(im); draw(d)
     p = f"{T}/{name}.png"; im.save(p); return p
 
 def clip(i, src_t0, src_t1, png, audio="base", vo=None, freeze=0.0):
@@ -73,14 +90,14 @@ hook = overlay("hook", lambda d: (box_text(d, 190, "Pour perdre du poids…", BD
 clips.append(clip(0, 7.5, 10.0, hook, audio="mute"))   # début sans le bruit de fond
 for k, (food, v0, v1, a0, a1, ok, note, l0) in enumerate(ITEMS, 1):
     d_vo = v1 - v0
-    q = overlay(f"q{k}", lambda d, food=food: box_text(d, 200, food, XB(92), WHITE, PINK))
+    q = overlay(f"q{k}", lambda d, food=food: box_text(d, 200, food, XB(92), WHITE, PINK), food=food)
     clips.append(clip(len(clips), l0, l0 + d_vo, q, audio="vo", vo=(v0, v1)))
     def ans(d, food=food, ok=ok, note=note):
         y = box_text(d, 190, food, XB(70), PINK, WHITE)
         y = box_text(d, y + 30, "AUTORISÉ" if ok else "PAS AUTORISÉ", XB(96), WHITE, GREEN if ok else RED)
         if note: box_text(d, y + 20, note, BD(50), DARK, WHITE)   # sous le verdict, jamais en bas
     fz = {"FROMAGE BLANC": 0.3, "GALETTE DE RIZ": 0.55}.get(food, 0.0)   # elle tourne la tête juste avant : image figée face caméra
-    clips.append(clip(len(clips), a0, a1, overlay(f"a{k}", ans), freeze=fz))
+    clips.append(clip(len(clips), a0, a1, overlay(f"a{k}", ans, food=food), freeze=fz))
 # Outro : la voix off (« et t'abonner à mon compte »), puis ta réponse
 # Outro : sans la voix off « et t'abonner à mon compte », directement ta phrase
 oa = overlay("oa", lambda d: box_text(d, 200, "Abonne-toi à @helene_belmonte", XB(70), WHITE, PINK))
