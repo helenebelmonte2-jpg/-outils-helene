@@ -14,8 +14,8 @@ PHOTOS = os.path.join(os.path.dirname(OUT), "photos_aliments")
 FILES = {"JUS D'ORANGE": "jus", "GRANOLA": "granola", "ŒUF": "oeuf", "SMOOTHIE": "smoothie", "AVOCAT": "avocat",
          "FROMAGE BLANC": "fromage_blanc", "GALETTE DE RIZ": "galette_riz", "RIZ BLANC": "riz_blanc", "SALADE COMPOSÉE DU COMMERCE": "salade_commerce"}
 
-def photo_card(im, food, cy=1130, size=460):
-    """Photo de l'aliment dans une carte blanche arrondie, au niveau du buste (jamais en bas)."""
+def photo_card(im, food, cy=1540, size=420):
+    """Photo de l'aliment dans une carte blanche arrondie, au niveau de ses mains (demande d'Hélène)."""
     f = os.path.join(PHOTOS, FILES[food] + ".png")
     if not os.path.exists(f): return
     ph = Image.open(f).convert("RGB").resize((size, size), Image.LANCZOS).filter(ImageFilter.UnsharpMask(2, 80, 2))
@@ -30,12 +30,12 @@ def photo_card(im, food, cy=1130, size=460):
 # (aliment, voix off début/fin, réponse début/fin, verdict, précision, plan d'écoute)
 # Le « plan d'écoute » = un moment où Hélène regarde bien la caméra (jamais en bas / sur le côté)
 ITEMS = [
- ("JUS D'ORANGE", 0.0, 2.3, 21.2, 24.4, False, "Trop sucré et pas du tout de fibres", 17.5),
+ ("JUS D'ORANGE", 0.0, 2.3, 21.2, 24.4, False, "Trop sucré et pas du tout de fibres", 17.2),
  ("GRANOLA", 2.5, 3.8, 29.7, 31.6, False, "", 28.4),
  ("ŒUF", 4.5, 5.8, 35.7, 36.7, True, "", 68.6),
  ("SMOOTHIE", 6.1, 7.5, 39.2, 40.0, False, "", 37.6),
  ("AVOCAT", 8.2, 9.1, 44.9, 46.9, True, "Mais attention à la quantité", 70.0),
- ("FROMAGE BLANC", 9.7, 10.9, 50.85, 52.4, True, "", 37.6),
+ ("FROMAGE BLANC", 9.7, 10.9, 50.85, 52.4, True, "", 18.2),
  ("GALETTE DE RIZ", 11.7, 12.7, 59.4, 62.8, False, "Ça n'a pas d'intérêt, ça ne cale vraiment pas", 9.0),
  ("RIZ BLANC", 13.3, 14.2, 68.15, 69.0, True, "", 8.0),
  ("SALADE COMPOSÉE DU COMMERCE", 15.0, 16.62, 69.7, 71.7, False, "", 17.6),
@@ -68,17 +68,17 @@ def clip(i, src_t0, src_t1, png, audio="base", vo=None, freeze=0.0):
     cmd = ["ffmpeg", "-v", "error", "-y", "-ss", str(src_t0 + freeze), "-t", str(dur), "-i", BASE, "-i", png]
     if freeze:
         cmd += ["-ss", str(src_t0), "-t", str(dur), "-i", BASE]
-    CLEAN = "highpass=f=90,lowpass=f=9000,afftdn=nr=20:nf=-30,agate=threshold=0.02:ratio=8:attack=5:release=180,loudnorm=I=-16:TP=-1.5"
+    CLEAN = "highpass=f=80,afftdn=nr=8:nf=-40:tn=1,loudnorm=I=-16:TP=-1.5"   # débruitage doux, sans « gate » (sinon la voix sonne coupée)
     if audio == "vo":
         cmd += ["-ss", str(vo[0]), "-t", str(dur), "-i", VO]
-        af = f"[2:a]{CLEAN},apad[a]"
+        af = f"[2:a]{CLEAN},afade=t=in:d=0.04,apad[a]"
     elif audio == "mute":
         cmd += ["-f", "lavfi", "-t", str(dur), "-i", "anullsrc=r=48000:cl=stereo"]
         af = "[2:a]anull[a]"
     elif freeze:
-        af = f"[2:a]{CLEAN},apad[a]"
+        af = f"[2:a]{CLEAN},afade=t=in:d=0.04,afade=t=out:st={max(dur-0.06,0):.3f}:d=0.06,apad[a]"
     else:
-        af = f"[0:a]{CLEAN},apad[a]"
+        af = f"[0:a]{CLEAN},afade=t=in:d=0.04,afade=t=out:st={max(dur-0.06,0):.3f}:d=0.06,apad[a]"
     cmd += ["-filter_complex", vf + ";" + af, "-map", "[vo]", "-map", "[a]", "-t", str(dur),
             "-c:v", "libx264", "-preset", "medium", "-crf", "23", "-pix_fmt", "yuv420p", "-c:a", "aac", "-ar", "48000", "-ac", "2", out]
     subprocess.run(cmd, check=True); return out
@@ -96,8 +96,8 @@ for k, (food, v0, v1, a0, a1, ok, note, l0) in enumerate(ITEMS, 1):
         y = box_text(d, 190, food, XB(70), PINK, WHITE)
         y = box_text(d, y + 30, "AUTORISÉ" if ok else "PAS AUTORISÉ", XB(96), WHITE, GREEN if ok else RED)
         if note: box_text(d, y + 20, note, BD(50), DARK, WHITE)   # sous le verdict, jamais en bas
-    fz = {"FROMAGE BLANC": 0.3, "GALETTE DE RIZ": 0.55}.get(food, 0.0)   # elle tourne la tête juste avant : image figée face caméra
-    clips.append(clip(len(clips), a0, a1, overlay(f"a{k}", ans, food=food), freeze=fz))
+    fz = {"JUS D'ORANGE": 0.3, "FROMAGE BLANC": 0.5, "GALETTE DE RIZ": 0.55}.get(food, 0.0)   # elle tourne la tête juste avant : image figée face caméra
+    clips.append(clip(len(clips), a0, a1 + 0.2, overlay(f"a{k}", ans, food=food), freeze=fz))
 # Outro : la voix off (« et t'abonner à mon compte »), puis ta réponse
 # Outro : sans la voix off « et t'abonner à mon compte », directement ta phrase
 oa = overlay("oa", lambda d: box_text(d, 200, "Abonne-toi à @helene_belmonte", XB(70), WHITE, PINK))
