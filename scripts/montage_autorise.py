@@ -100,7 +100,23 @@ for k, (food, v0, v1, a0, a1, ok, note, l0) in enumerate(ITEMS, 1):
     clips.append(clip(len(clips), a0, a1, overlay(f"a{k}", ans, food=food), freeze=fz))   # fins coupées juste après la voix (pas de blancs)
 # Outro : la voix off (« et t'abonner à mon compte »), puis ta réponse
 # Outro : sans la voix off « et t'abonner à mon compte », directement ta phrase
-oa = overlay("oa", lambda d: box_text(d, 200, "Abonne-toi à @helene_belmonte", XB(70), WHITE, PINK))
+def profil_card(im, cy=1340, w=980):
+    """À la fin : son profil Instagram (capture nettoyée profil_carte.png), demande d'Hélène."""
+    f = os.path.join(os.path.dirname(OUT), "profil_carte.png")
+    if not os.path.exists(f): return
+    pc = Image.open(f).convert("RGB"); h = round(pc.height * w / pc.width)
+    pc = pc.resize((w, h), Image.LANCZOS); x, y = (W - w) // 2, cy - h // 2
+    sh = Image.new("RGBA", (W, H), (0, 0, 0, 0)); ImageDraw.Draw(sh).rounded_rectangle((x + 6, y + 12, x + w + 6, y + h + 12), 40, fill=(0, 0, 0, 110))
+    im.alpha_composite(sh.filter(ImageFilter.GaussianBlur(14)))
+    m = Image.new("L", (w, h), 0); ImageDraw.Draw(m).rounded_rectangle((0, 0, w, h), 40, fill=255)
+    im.paste(pc, (x, y), m)
+    ImageDraw.Draw(im).rounded_rectangle((x, y, x + w, y + h), 40, outline=PINK, width=6)
+
+def outro_png():
+    im = Image.new("RGBA", (W, H), (0, 0, 0, 0)); profil_card(im)
+    box_text(ImageDraw.Draw(im), 200, "Abonne-toi à @helene_belmonte", XB(70), WHITE, PINK)
+    p = f"{T}/oa.png"; im.save(p); return p
+oa = outro_png()
 clips.append(clip(len(clips), OUTRO[0], OUTRO[1], oa))
 clips.append(clip(len(clips), 89.45, 90.3, oa))   # « … de conseils » (on saute le blanc au milieu)
 lst = f"{T}/list.txt"; open(lst, "w").write("".join(f"file '{c}'\n" for c in clips))
