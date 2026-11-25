@@ -14,7 +14,7 @@ PHOTOS = os.path.join(os.path.dirname(OUT), "photos_aliments")
 FILES = {"JUS D'ORANGE": "jus", "GRANOLA": "granola", "ŒUF": "oeuf", "SMOOTHIE": "smoothie", "AVOCAT": "avocat",
          "FROMAGE BLANC": "fromage_blanc", "GALETTE DE RIZ": "galette_riz", "RIZ BLANC": "riz_blanc", "SALADE COMPOSÉE DU COMMERCE": "salade_commerce"}
 
-def photo_card(im, food, cy=1540, size=420):
+def photo_card(im, food, cy=1420, size=420):
     """Photo de l'aliment dans une carte blanche arrondie, au niveau de ses mains (demande d'Hélène)."""
     f = os.path.join(PHOTOS, FILES[food] + ".png")
     if not os.path.exists(f): return
@@ -30,17 +30,17 @@ def photo_card(im, food, cy=1540, size=420):
 # (aliment, voix off début/fin, réponse début/fin, verdict, précision, plan d'écoute)
 # Le « plan d'écoute » = un moment où Hélène regarde bien la caméra (jamais en bas / sur le côté)
 ITEMS = [
- ("JUS D'ORANGE", 0.0, 2.3, 21.2, 24.4, False, "Trop sucré et pas du tout de fibres", 17.2),
- ("GRANOLA", 2.5, 3.8, 29.7, 31.6, False, "", 28.4),
- ("ŒUF", 4.5, 5.8, 35.7, 36.7, True, "", 68.6),
- ("SMOOTHIE", 6.1, 7.5, 39.2, 40.0, False, "", 37.6),
- ("AVOCAT", 8.2, 9.1, 44.9, 46.9, True, "Mais attention à la quantité", 70.0),
- ("FROMAGE BLANC", 9.7, 10.9, 50.85, 52.4, True, "", 18.2),
- ("GALETTE DE RIZ", 11.7, 12.7, 59.4, 62.8, False, "Ça n'a pas d'intérêt, ça ne cale vraiment pas", 9.0),
- ("RIZ BLANC", 13.3, 14.2, 68.15, 69.0, True, "", 8.0),
- ("SALADE COMPOSÉE DU COMMERCE", 15.0, 16.62, 69.7, 71.7, False, "", 17.6),
+ ("JUS D'ORANGE", 1.1, 2.36, 21.2, 24.32, False, "Trop sucré et pas du tout de fibres", 17.2),
+ ("GRANOLA", 3.05, 3.93, 29.7, 30.65, False, "", 28.4),
+ ("ŒUF", 4.85, 5.5, 35.7, 36.57, True, "", 68.6),
+ ("SMOOTHIE", 6.14, 7.68, 39.2, 39.99, False, "", 37.6),
+ ("AVOCAT", 8.32, 9.03, 44.9, 46.85, True, "Mais attention à la quantité", 70.0),
+ ("FROMAGE BLANC", 10.05, 10.98, 50.85, 51.8, True, "", 18.2),
+ ("GALETTE DE RIZ", 11.82, 12.7, 59.4, 62.74, False, "Ça n'a pas d'intérêt, ça ne cale vraiment pas", 9.0),
+ ("RIZ BLANC", 13.51, 14.27, 68.15, 68.95, True, "", 8.0),
+ ("SALADE COMPOSÉE DU COMMERCE", 15.03, 16.94, 69.7, 70.9, False, "", 17.6),
 ]
-OUTRO_VO = (16.6, 19.4); OUTRO = (83.7, 86.2)
+OUTRO_VO = (16.6, 19.4); OUTRO = (83.7, 86.05)
 
 def box_text(d, y, text, f, fg, bg, maxw=920, pad=26):
     words, lines, cur = text.split(" "), [], ""
@@ -97,12 +97,12 @@ for k, (food, v0, v1, a0, a1, ok, note, l0) in enumerate(ITEMS, 1):
         y = box_text(d, y + 30, "AUTORISÉ" if ok else "PAS AUTORISÉ", XB(96), WHITE, GREEN if ok else RED)
         if note: box_text(d, y + 20, note, BD(50), DARK, WHITE)   # sous le verdict, jamais en bas
     fz = {"JUS D'ORANGE": 0.3, "FROMAGE BLANC": 0.5, "GALETTE DE RIZ": 0.55}.get(food, 0.0)   # elle tourne la tête juste avant : image figée face caméra
-    clips.append(clip(len(clips), a0, a1 + 0.2, overlay(f"a{k}", ans, food=food), freeze=fz))
+    clips.append(clip(len(clips), a0, a1, overlay(f"a{k}", ans, food=food), freeze=fz))   # fins coupées juste après la voix (pas de blancs)
 # Outro : la voix off (« et t'abonner à mon compte »), puis ta réponse
 # Outro : sans la voix off « et t'abonner à mon compte », directement ta phrase
 oa = overlay("oa", lambda d: box_text(d, 200, "Abonne-toi à @helene_belmonte", XB(70), WHITE, PINK))
 clips.append(clip(len(clips), OUTRO[0], OUTRO[1], oa))
-clips.append(clip(len(clips), 88.0, 90.5, oa))   # « … de conseils » (on saute le blanc au milieu)
+clips.append(clip(len(clips), 89.45, 90.3, oa))   # « … de conseils » (on saute le blanc au milieu)
 lst = f"{T}/list.txt"; open(lst, "w").write("".join(f"file '{c}'\n" for c in clips))
 subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", lst, "-c", "copy", "-movflags", "+faststart", OUT], check=True)
 print("OK", OUT)
