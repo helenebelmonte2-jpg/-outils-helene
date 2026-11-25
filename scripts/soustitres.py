@@ -30,11 +30,12 @@ for i, t in enumerate(times):
         times[i] = (prev, max(prev + 0.15, nxt))
 # Les temps de la transcription sont parfois en avance : un sous-titre ne commence jamais avant que la voix commence
 hop = 160; env = np.array([np.sqrt(np.mean(a[k:k + hop] ** 2)) for k in range(0, len(a) - hop, hop)])
-voice = 20 * np.log10(env + 1e-9) > -38
+lvl = 20 * np.log10(env + 1e-9)
+voice = [bool(np.all(lvl[k:k + 5] > -30)) for k in range(len(lvl))]   # vraie voix = au moins 50 ms au-dessus de -30 dB (pas un petit bruit)
 def snap(t):
     k = int(t * 100)
-    if k < len(voice) and voice[k]: return t
-    for j in range(k, min(len(voice), k + 70)):
+    if k < len(voice) and any(voice[max(0, k - 3):k + 3]): return t
+    for j in range(k, min(len(voice), k + 90)):
         if voice[j]: return j / 100
     return t
 for i, (st, en) in enumerate(times):

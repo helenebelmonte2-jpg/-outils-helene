@@ -30,7 +30,7 @@ def photo_card(im, food, cy=1420, size=420):
 # (aliment, voix off début/fin, réponse début/fin, verdict, précision, plan d'écoute)
 # Le « plan d'écoute » = un moment où Hélène regarde bien la caméra (jamais en bas / sur le côté)
 ITEMS = [
- ("JUS D'ORANGE", 1.1, 2.36, 21.2, 24.32, False, "Trop sucré et pas du tout de fibres", 17.2),
+ ("JUS D'ORANGE", 1.1, 2.36, 21.70, 24.32, False, "Trop sucré et pas du tout de fibres", 17.2),   # 21.70 : juste avant « Pas » (avant : 0,5 s d'image figée tête levée)
  ("GRANOLA", 3.05, 3.93, 29.7, 30.65, False, "", 28.4),
  ("ŒUF", 4.85, 5.5, 35.7, 36.57, True, "", 68.6),
  ("SMOOTHIE", 6.14, 7.68, 39.2, 39.99, False, "", 37.6),
