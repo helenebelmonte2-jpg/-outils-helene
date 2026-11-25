@@ -57,7 +57,7 @@ def box_text(d, y, text, f, fg, bg, maxw=920, pad=26):
 
 def draw_hook(d):
     """Hook permanent en haut pendant tout le Reel (demande d'Hélène, 25/11) : plus aucun autre texte en haut."""
-    box_text(d, 190, "Pour perdre du poids…", BD(52), DARK, WHITE)
+    box_text(d, 190, "Pour perdre du poids…", BD(52), WHITE, PINK)
     box_text(d, 290, "AUTORISÉ ou PAS AUTORISÉ ?", XB(62), WHITE, PINK, maxw=1010)
 
 def overlay(name, draw, food=None):
