@@ -55,10 +55,15 @@ def box_text(d, y, text, f, fg, bg, maxw=920, pad=26):
         d.text((x, y), ln, font=f, fill=fg); y += f.size * 1.35
     return y
 
+def draw_hook(d):
+    """Hook permanent en haut pendant tout le Reel (demande d'Hélène, 25/11) : plus aucun autre texte en haut."""
+    box_text(d, 190, "Pour perdre du poids…", BD(52), DARK, WHITE)
+    box_text(d, 290, "AUTORISÉ ou PAS AUTORISÉ ?", XB(62), WHITE, PINK, maxw=1010)
+
 def overlay(name, draw, food=None):
     im = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     if food: photo_card(im, food)
-    d = ImageDraw.Draw(im); draw(d)
+    d = ImageDraw.Draw(im); draw_hook(d); draw(d)
     p = f"{T}/{name}.png"; im.save(p); return p
 
 def clip(i, src_t0, src_t1, png, audio="base", vo=None, freeze=0.0):
@@ -85,17 +90,13 @@ def clip(i, src_t0, src_t1, png, audio="base", vo=None, freeze=0.0):
 
 clips = []
 # Hook
-hook = overlay("hook", lambda d: (box_text(d, 190, "Pour perdre du poids…", BD(52), DARK, WHITE),
-                                  box_text(d, 300, "AUTORISÉ ou PAS AUTORISÉ ?", XB(78), WHITE, PINK)))
+hook = overlay("hook", lambda d: None)
 clips.append(clip(0, 7.5, 10.0, hook, audio="mute"))   # début sans le bruit de fond
 for k, (food, v0, v1, a0, a1, ok, note, l0) in enumerate(ITEMS, 1):
     d_vo = v1 - v0
-    q = overlay(f"q{k}", lambda d, food=food: box_text(d, 200, food, XB(92), WHITE, PINK), food=food)
+    q = overlay(f"q{k}", lambda d: None, food=food)
     clips.append(clip(len(clips), l0, l0 + d_vo, q, audio="vo", vo=(v0, v1)))
-    def ans(d, food=food, ok=ok, note=note):
-        y = box_text(d, 190, food, XB(70), PINK, WHITE)
-        y = box_text(d, y + 30, "AUTORISÉ" if ok else "PAS AUTORISÉ", XB(96), WHITE, GREEN if ok else RED)
-        if note: box_text(d, y + 20, note, BD(50), DARK, WHITE)   # sous le verdict, jamais en bas
+    ans = lambda d: None   # 25/11 : plus de nom / verdict en haut, seulement le hook permanent
     fz = {"JUS D'ORANGE": 0.3, "FROMAGE BLANC": 0.5, "GALETTE DE RIZ": 0.55}.get(food, 0.0)   # elle tourne la tête juste avant : image figée face caméra
     clips.append(clip(len(clips), a0, a1, overlay(f"a{k}", ans, food=food), freeze=fz))   # fins coupées juste après la voix (pas de blancs)
 # Outro : la voix off (« et t'abonner à mon compte »), puis ta réponse
@@ -113,8 +114,7 @@ def profil_card(im, cy=1340, w=980):
     ImageDraw.Draw(im).rounded_rectangle((x, y, x + w, y + h), 40, outline=PINK, width=6)
 
 def outro_png():
-    im = Image.new("RGBA", (W, H), (0, 0, 0, 0)); profil_card(im)
-    box_text(ImageDraw.Draw(im), 200, "Abonne-toi à @helene_belmonte", XB(70), WHITE, PINK)
+    im = Image.new("RGBA", (W, H), (0, 0, 0, 0)); profil_card(im); draw_hook(ImageDraw.Draw(im))
     p = f"{T}/oa.png"; im.save(p); return p
 oa = outro_png()
 clips.append(clip(len(clips), OUTRO[0], OUTRO[1], oa))
