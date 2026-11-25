@@ -185,9 +185,9 @@ for k, (food, v0, v1, a0, a1, ok, note, l0) in enumerate(ITEMS, 1):
         clips.append(clip(len(clips), s0, s1 - s0, ov, ("base", s0)))
 # Outro : la voix off (« et t'abonner à mon compte »), puis ta réponse
 # Outro : sans la voix off « et t'abonner à mon compte », directement ta phrase
-def profil_card(im, cy=1340, w=980):
-    """À la fin : son profil Instagram (capture nettoyée profil_carte.png), demande d'Hélène."""
-    f = os.path.join(os.path.dirname(OUT), "profil_carte.png")
+def profil_card(im, cy=1340, w=int(os.environ.get("PROFIL_W", 980))):
+    """À la fin : son profil (Instagram par défaut ; PROFIL=profil_carte_facebook.png / _tiktok.png pour les autres réseaux)."""
+    f = os.path.join(os.path.dirname(OUT), os.environ.get("PROFIL", "profil_carte.png"))
     if not os.path.exists(f): return
     pc = Image.open(f).convert("RGB"); h = round(pc.height * w / pc.width)
     pc = pc.resize((w, h), Image.LANCZOS); x, y = (W - w) // 2, cy - h // 2
