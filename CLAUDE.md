@@ -59,6 +59,7 @@ Docs business : contrat, mail de bienvenue, questionnaire de profil alimentaire,
 - Mission : aider les femmes à changer leur regard sur la nourriture, perdre du poids sans frustration, avec une méthode adaptée à leur rythme.
 - Vers 21 ans : elle a **perdu 10 kg** le jour où elle a « enfin compris que la privation ne servait à rien » (rééquilibrage alimentaire), et elle **maintient son poids** depuis. Elle n'a plus peur de manger et se fait plaisir à chaque repas.
 - **Mots bannis** : « diète » et « régime » pour parler de sa méthode. Toujours dire **« rééquilibrage alimentaire »**.
+- **Ne plus parler de « 10 kg » (26/11)** dans les stories et le carrousel : dire « j'ai perdu du poids et je ne l'ai jamais repris ». (Le chiffre reste encore sur d'anciens contenus : couverture Facebook, stories à la une « Qui suis-je » / « Mon programme » : lui demander si on les change.)
 - **Pas de photos avant/après, jamais** : elle ne veut pas les partager (période difficile). Ne plus les proposer.
 - À compléter : vie perso (si elle le souhaite).
 
@@ -113,7 +114,7 @@ Règles des stories qui marchent (à appliquer) :
 ## Contenus déjà créés (à retrouver quand elle les redemande)
 | Date | Contenu | Dans le dépôt | Sur le Drive |
 |---|---|---|---|
-| 23/11/2026 | **Carrousel « Mon histoire »** (11 slides + légende), version finale validée avec sa photo de la salle en slide 8 | `contenus/2026-11-23_carrousel_mon_histoire/` (script : `scripts/carrousel_mon_histoire.py`) | Montage perso → « Carrousel Mon histoire (23-11) » (`1U1q6-yKFjZ0s7DTPMM3IOsDEJfJ3oK1a`) |
+| 23/11/2026 | **Carrousel « Mon histoire »** (11 slides + légende), version finale validée avec sa photo de la salle en slide 8 ; **26/11 : « 10 kg » retiré (slide 8 + légende : « j'ai perdu du poids. Et je ne l'ai jamais repris »)** | `contenus/2026-11-23_carrousel_mon_histoire/` (script : `scripts/carrousel_mon_histoire.py`) | Montage perso → « Carrousel Mon histoire (23-11) » (`1U1q6-yKFjZ0s7DTPMM3IOsDEJfJ3oK1a`) |
 | 23/11/2026 | Story « Marche en pente » (texte incrusté sur la vidéo du tapis) | `contenus/2026-11-23_story_marche_en_pente/` | Pas sur le Drive (fichier trop lourd pour l'envoi) |
 | 24/11/2026 | **Versions courtes (4 stories chacune) des stories à la une, choisies par Hélène** (elle ne veut pas « bombarder » ses stories ; elle peut les étaler sur plusieurs jours puis les ajouter depuis l'archive ; supprimer une story l'enlève aussi de la story à la une) | `contenus/2026-11-24_une_qui_suis_je_court/` et `contenus/2026-11-24_une_mon_programme_court/` | Montage perso → « Stories à la une courtes (24-11) » |
 | 24/11/2026 | Stories à la une « Qui suis-je », version longue (8 visuels natifs : Hélène, aide-soignante, ado complexée, coachs, déclic, 10 kg, mission, CTA DÉCLIC) | `contenus/2026-11-24_une_qui_suis_je/` | Montage perso → « Stories à la une (24-11) / Qui suis-je » |

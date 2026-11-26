@@ -68,7 +68,7 @@ slides = [
  ("txt", "04", "J'ai fait appel à *plusieurs coachs.*\n\nJe perdais du poids… puis *je reprenais tout.*\n\nEt à chaque repas, *j'avais peur de manger.*"),
  ("txt", "05", "Aide-soignante, *horaires décalés*, journées à rallonge, repas sur le pouce…\n\nAucune méthode n'était faite pour *MA vie.*"),
  ("pink", "Le déclic", "J'ai enfin compris que la privation ne servait à rien."),
- ("photo", "", "Grâce au *rééquilibrage alimentaire*, j'ai perdu *10 kg.*\n\nEt je ne les ai *jamais repris.*"),
+ ("photo", "", "Grâce au *rééquilibrage alimentaire*, j'ai perdu *du poids.*\n\nEt je ne l'ai *jamais repris.*"),
  ("txt", "Aujourd'hui", "Je n'ai *plus peur de manger.* Je me fais *plaisir à chaque repas.*\n\nEt j'ai trouvé un sport que j'aime, qui me donne envie de me lever le matin."),
  ("pink", "Ma plus belle décision", "Prendre du temps pour moi et investir en moi."),
  ("cta", "", ""),
