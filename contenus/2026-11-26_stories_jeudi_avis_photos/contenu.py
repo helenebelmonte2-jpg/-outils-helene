@@ -10,6 +10,11 @@ STORIES = [
     ("« Je voudrais que tu m'envoies tous les aliments que je peux manger »", 56, "dark"),
     ("Et une autre : « Heu… la liste ne doit pas être longue… »", 46, "white", "b")]},
  # story 3 = vidéo des courses (story_03.mp4), texte ci-dessous incrusté
+ # stats du sondage de mardi (« Toi aussi tu manges tard ? » Oui 38 % / Non 62 %), sur son selfie du 26/11
+ {"photo": "contenus/photos/photo_2026-11-26_selfie_tshirt_blanc.png", "y": 1330, "blocs": [
+    ("Vous avez répondu à mon sondage !", 46, "white", "b"),
+    ("38 % d'entre vous mangent tard le soir", 58, "pink"),
+    ("Bonne nouvelle : ce n'est pas l'heure qui fait grossir, c'est ta journée entière qui compte", 44, "dark", "b")]},
  {"photo": P + "2_salle.jpg", "y": 1430, "focus": 0.4, "blocs": [
     ("Toi aussi tu veux savoir quoi mettre dans ton assiette ?", 52, "white"),
     ("Écris-moi DÉCLIC en message", 56, "pink")]},
