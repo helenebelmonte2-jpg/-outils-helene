@@ -1,7 +1,7 @@
-# Story 5 demandée par Hélène (26/11) : sa photo à la salle + « Grâce à ma méthode j'ai perdu et stabilisé » + CTA
+# Story 5 demandée par Hélène (26/11) : sa photo à la salle + phrase du carrousel « Mon histoire » + CTA
 STORIES = [
  {"photo": "contenus/2026-11-24_stories_lifestyle_photos/photos/2_salle.jpg", "y": 1330, "focus": 0.4, "blocs": [
-    ("Grâce à ma méthode, j'ai perdu 10 kg…", 54, "white"),
-    ("et je les ai stabilisés.", 60, "pink"),
+    ("Grâce au rééquilibrage alimentaire, j'ai perdu 10 kg.", 52, "white"),
+    ("Et je ne les ai jamais repris.", 58, "pink"),
     ("Toi aussi ? Écris-moi DÉCLIC en message", 48, "dark", "b")]},
 ]
