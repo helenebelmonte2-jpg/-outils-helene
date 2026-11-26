@@ -69,7 +69,7 @@ slides = [
  ("txt", "05", "Aide-soignante, *horaires décalés*, journées à rallonge, repas sur le pouce…\n\nAucune méthode n'était faite pour *MA vie.*"),
  ("pink", "Le déclic", "J'ai enfin compris que la privation ne servait à rien."),
  ("photo", "", "Grâce au *rééquilibrage alimentaire*, j'ai perdu *du poids.*\n\nEt je ne l'ai *jamais repris.*"),
- ("txt", "Aujourd'hui", "Je n'ai *plus peur de manger.* Je me fais *plaisir à chaque repas.*\n\nEt j'ai trouvé un sport que j'aime, qui me donne envie de me lever le matin."),
+ ("photo", "Aujourd'hui", "Je n'ai *plus peur de manger.* Je me fais *plaisir à chaque repas.*\n\nEt j'ai trouvé un sport que j'aime, qui me donne envie de me lever le matin."),
  ("pink", "Ma plus belle décision", "Prendre du temps pour moi et investir en moi."),
  ("cta", "", ""),
 ]
@@ -87,6 +87,11 @@ for i, (kind, a, b) in enumerate(slides):
             y += 115
         d.rounded_rectangle((100, y + 60, 100 + d.textlength(b + "  →", font=XB(40)) + 60, y + 140), 40, fill=WHITE)
         d.text((130, y + 100), b + "  →", font=XB(40), fill=PINK, anchor="lm")
+        R = 330; cx, cy = W - 100 - R // 2, H - 170 - R // 2      # sa photo de profil « jardin » en rond (26/11)
+        pr = Image.open("contenus/photos/photo_profil_finale.jpg").convert("RGB").resize((R, R), Image.LANCZOS)
+        mk = Image.new("L", (R, R), 0); ImageDraw.Draw(mk).ellipse((0, 0, R, R), fill=255)
+        d.ellipse((cx - R // 2 - 10, cy - R // 2 - 10, cx + R // 2 + 10, cy + R // 2 + 10), fill=WHITE)
+        im.paste(pr, (cx - R // 2, cy - R // 2), mk)
     elif kind == "txt":
         im, d = base(i, n)
         d.text((100, 200), a, font=XB(60 if len(a) > 2 else 110), fill=SOFT if len(a) <= 2 else PINK)
@@ -102,10 +107,14 @@ for i, (kind, a, b) in enumerate(slides):
             d.text((W / 2, y), t, font=XB(78), fill=WHITE, anchor="mm"); y += 100
     elif kind == "photo":
         im, d = base(i, n)
-        ph = ImageOps.exif_transpose(Image.open(os.path.join(os.path.dirname(OUT), "photo.jpg")).convert("RGB"))
+        # slide 8 : photo salle ; slide « Aujourd'hui » : photo veste kaki bras croisés (choix 26/11)
+        if a == "Aujourd'hui":
+            ph = ImageOps.exif_transpose(Image.open("contenus/photos/photo_banniere_originale.jpg").convert("RGB")); fx, fw = 0.32, 0.56
+        else:
+            ph = ImageOps.exif_transpose(Image.open(os.path.join(os.path.dirname(OUT), "photo.jpg")).convert("RGB")); fx, fw = 0.47, 0.42
         pw, phh = ph.size
-        PW = 500; cw = int(pw * 0.42); ch = int(cw * H / PW)
-        x0 = int(pw * 0.47); y0 = 0
+        PW = 500; cw = int(pw * fw); ch = min(phh, int(cw * H / PW)); cw = int(ch * PW / H)
+        x0 = int(pw * fx); y0 = 0
         ph = ph.crop((x0, y0, x0 + cw, y0 + ch)).resize((PW, H), Image.LANCZOS)
         im.paste(ph, (W - PW, 0))
         d = ImageDraw.Draw(im)
@@ -115,7 +124,8 @@ for i, (kind, a, b) in enumerate(slides):
         for k in range(n):
             d.ellipse((xx, H - 70, xx + 10, H - 60), fill=PINK if k == i else SOFT); xx += 22
         d.text(((W - PW) / 2, H - 115), "@helene_belmonte", font=RG(26), fill=PINK, anchor="mm")
-        draw_rich(d, b, XB(54), 330, maxw=W - PW - 120, lh=1.25, x0=60)
+        if a: d.text((60, 200), a, font=XB(52), fill=PINK)
+        draw_rich(d, b, XB(54 if not a else 46), 330, maxw=W - PW - 120, lh=1.25, x0=60)
     elif kind == "cta":
         im, d = base(i, n, PINK)
         d.text((W / 2, 300), "Tu te reconnais ?", font=XB(80), fill=WHITE, anchor="mm")
