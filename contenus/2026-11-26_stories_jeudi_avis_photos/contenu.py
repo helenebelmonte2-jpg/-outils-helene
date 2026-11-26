@@ -15,9 +15,7 @@ STORIES = [
     ("Vous avez répondu à mon sondage !", 46, "white", "b"),
     ("38 % d'entre vous mangent tard le soir", 58, "pink"),
     ("Bonne nouvelle : ce n'est pas l'heure qui fait grossir, c'est ta journée entière qui compte", 44, "dark", "b")]},
- {"photo": P + "2_salle.jpg", "y": 1430, "focus": 0.4, "blocs": [
-    ("Toi aussi tu veux savoir quoi mettre dans ton assiette ?", 52, "white"),
-    ("Écris-moi DÉCLIC en message", 56, "pink")]},
+ # story 5 (CTA) : fond rose natif (story_05_natif.py) – la photo salle est déjà publiée dans le carrousel « Mon histoire »
 ]
 VIDEO = {"video": P + "video_courses.mp4", "y": 230, "blocs": [
     ("Eh bien si !", 62, "pink"),
