@@ -25,10 +25,10 @@ ITEMS = [
  ("Il existe un aliment brûle-graisse miracle", 12.78, 16.36, 16.53, 17.30, False),
  ("Il faut être parfaite tous les jours pour voir des résultats", 18.37, 21.82, 19.56, 20.35, False),
  ("L'alcool peut ralentir ta perte de poids", 23.31, 25.79, 27.04, 27.91, True),
- ("Se fixer des objectifs réalistes aide à tenir sur la durée", 26.97, 30.91, 29.49, 30.66, True),
+ ("Se fixer des objectifs réalistes aide à tenir sur la durée", 26.97, 30.91, 34.56, 35.42, True),   # sa vraie réponse (29.49) : elle tourne la tête → « Vérité » de la question 9, face caméra
  ("La whey peut t'aider à atteindre tes besoins en protéines", 31.79, 37.09, 31.96, 32.86, True),
- ("Les régimes trop stricts font reprendre le poids perdu", 37.53, 42.97, 34.56, 35.42, True),
- ("Manger des légumes à chaque repas aide à être rassasiée", 44.42, 50.06, 37.29, 38.21, True),
+ ("Les régimes trop stricts font reprendre le poids perdu", 38.72, 42.97, 34.56, 35.42, True),
+ ("Manger des légumes à chaque repas aide à être rassasiée", 44.42, 50.06, 27.04, 27.91, True),   # sa vraie réponse (37.29) : tête tournée → « Vérité » de la question 6
 ]
 
 # ---------- habillage ----------
@@ -104,7 +104,7 @@ def clean_track(src, name):
 BASE_A = clean_track(BASE, "base"); VO_A = clean_track(VO, "vo")
 def vo_tight(k, v0, v1):
     """Phrase de la voix off sans les blancs de plus de 0,3 s (moins d'attente, moins d'images figées)."""
-    log = subprocess.run(["ffmpeg", "-ss", f"{v0}", "-to", f"{v1}", "-i", VO_A, "-af", "silencedetect=n=-38dB:d=0.3", "-f", "null", "-"],
+    log = subprocess.run(["ffmpeg", "-ss", f"{v0}", "-to", f"{v1}", "-i", VO_A, "-af", "silencedetect=n=-33dB:d=0.25", "-f", "null", "-"],
                          capture_output=True, text=True).stderr
     st = [float(x) for x in re.findall(r"silence_start: ([\d.]+)", log)]; en = [float(x) for x in re.findall(r"silence_end: ([\d.]+)", log)]
     pieces, cur = [], 0.0
@@ -131,7 +131,7 @@ hop = 16000 // FFPS
 RMS = [20 * np.log10(np.sqrt(np.mean(a[k * hop:(k + 1) * hop] ** 2)) + 1e-9) for k in range(len(a) // hop)]
 SP = [r > -38 for r in RMS]
 SPEAK = [any(SP[max(0, k - 4):k + 5]) for k in range(len(SP))]
-BADQ = BAD[:]                                   # pour les plans d'écoute : vraiment aucune mauvaise image
+BADQ = [any(BAD[max(0, k - 8):k + 9]) for k in range(len(BAD))]   # plans d'écoute : aucune mauvaise image, avec une marge de 8 images (tête qui se retourne)
 BAD = [b and not (k < len(SPEAK) and SPEAK[k]) for k, b in enumerate(BAD)]   # quand elle parle : jamais figé
 
 def frame_plan(t0, dur):
@@ -150,25 +150,29 @@ ANSW = [(i[3] - 0.35, i[4] + 0.35) for i in ITEMS]; USED = []
 _log = subprocess.run(["ffmpeg", "-i", BASE, "-map", "0:a", "-af", "silencedetect=n=-32dB:d=0.3", "-f", "null", "-"], capture_output=True, text=True).stderr
 _st = [float(x) for x in re.findall(r"silence_start: ([\d.]+)", _log)]; _en = [float(x) for x in re.findall(r"silence_end: ([\d.]+)", _log)]
 VOICE = [(b - 0.15, c + 0.15) for b, c in zip(_en, _st[1:])]      # moments où elle parle (entre deux silences)
-def _best(n):
+def _best(n, strict=True):
     best = None
     for f0 in range(15, len(BADQ) - n - 15, 3):
         t0, t1 = f0 / FFPS, (f0 + n) / FFPS
         if any(x < t1 and t0 < y for x, y in ANSW + VOICE): continue
+        if strict and any(BADQ[f0:f0 + n]): continue          # d'abord : uniquement des plans 100 % face caméra
         fr = [FACE[k][1] for k in range(f0, f0 + n)]
         sc = 20 * sum(BADQ[f0:f0 + n]) / n + sum(d["jaw"] + d["blink"] + abs(d["yaw"] + 8) / 25 for d in fr if d) / n
         sc += 1.5 * sum(max(0, min(t1, y) - max(t0, x)) for x, y in USED) / (n / FFPS)
         if best is None or sc < best[0]: best = (sc, t0, sum(BADQ[f0:f0 + n]) / n)
+    if best is None and strict: return _best(n, False)
+    if best is None: return (99, 1.0, 1.0)
     return best
 BOOM = {}
 def pick_listen(dur):
     """Plan long sans assez de bonnes images : « aller-retour » d'un bon plan deux fois plus court
     (elle écoute sans bouger : on ne voit pas la différence, et pas d'image figée)."""
     n = round(dur * FFPS); b = _best(n)
-    if b[2] > 0.15:
-        b2 = _best(n // 2 + 1)
-        if b2[2] < b[2]:
-            USED.append((b2[1], b2[1] + dur / 2)); BOOM[round(b2[1], 3)] = True; return b2[1]
+    if b[2] > 0:
+        for k in (2, 3, 4):                     # aller-retour (ou aller-retour-aller…) d'un plan 100 % face caméra
+            b2 = _best(n // k + 1)
+            if b2[2] == 0:
+                USED.append((b2[1], b2[1] + dur / k)); BOOM[round(b2[1], 3)] = k; return b2[1]
     USED.append((b[1], b[1] + dur)); return b[1]
 def _old_pick_listen(dur):
     """Plan d'écoute pendant la voix off : en dehors de ses réponses, le plus de bonnes images possible
@@ -189,10 +193,10 @@ def clip(i, vt0, dur, png, audio):
     g = f"[0:v]scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},setsar=1,fps={FFPS},split={len(runs)}" + "".join(f"[s{j}]" for j in range(len(runs)))
     parts = []
     if BOOM.get(round(vt0, 3)) and audio[0] != "base":
-        nf = round(dur * FFPS); h = nf // 2 + 1
-        g = f"[0:v]scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},setsar=1,fps={FFPS},trim=end_frame={h},setpts=PTS-STARTPTS,split[s0][s1]"
-        parts = ["[s1]reverse[r1]", "[s0]null[r0]"]; runs = [[f0, f0 + h - 1, 0], [0, 0, 0]]; lead = 0
-        vf = g + ";" + ";".join(parts) + f";[r0][r1]concat=n=2:v=1:a=0,trim=end_frame={nf}[v];[v][1:v]overlay=0:0[vo]"
+        kk = BOOM[round(vt0, 3)]; nf = round(dur * FFPS); h = nf // kk + 1
+        g = f"[0:v]scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},setsar=1,fps={FFPS},trim=end_frame={h},setpts=PTS-STARTPTS,split={kk}" + "".join(f"[s{j}]" for j in range(kk))
+        parts = [f"[s{j}]{'reverse' if j % 2 else 'null'},setpts=PTS-STARTPTS[r{j}]" for j in range(kk)]; runs = [[f0, f0 + h - 1, 0]]; lead = 0
+        vf = g + ";" + ";".join(parts) + ";" + "".join(f"[r{j}]" for j in range(kk)) + f"concat=n={kk}:v=1:a=0,trim=end_frame={nf}[v];[v][1:v]overlay=0:0[vo]"
     for j, (x, y, hold) in enumerate(runs):
         opts = ([f"start_mode=clone:start={lead}"] if j == 0 and lead else []) + ([f"stop_mode=clone:stop={hold}"] if hold else [])
         tp = (",tpad=" + ":".join(opts)) if opts else ""          # UN SEUL tpad par morceau
