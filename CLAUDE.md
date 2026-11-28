@@ -47,7 +47,7 @@ Docs business : contrat, mail de bienvenue, questionnaire de profil alimentaire,
 - **Format qui ne marche pas** (23 à 500 vues) : gros bandeau rose de titre en haut, vidéo réduite au milieu, bandes noires, petits sous-titres. Hooks abstraits ou émotionnels (« La motivation ne suffit pas… », « Tu as tout essayé toute seule… »).
 - **Nom affiché Instagram (24/11) : « Hélène perte de poids sans régime »** (changeable 2 fois / 14 jours seulement). Reels épinglés : 16H et Concombre (3e à épingler : carrousel « Mon histoire » une fois publié).
 - Lien en bio : vidéo YouTube qui explique son programme (choix d'Hélène, on la garde).
-- **ManyChat** (25/11) : pas de connecteur ManyChat disponible pour Claude ; Hélène configure elle-même l'automatisation (mot-clé en commentaire → message privé). Mot-clé du Reel « Autorisé ou pas » : GUIDE.
+- **ManyChat** (25/11) : pas de connecteur ManyChat disponible pour Claude ; Hélène configure elle-même l'automatisation (mot-clé en commentaire → message privé). Mot-clé du Reel « Autorisé ou pas » : GUIDE. Message de réponse au mot-clé GUIDE : `fiches/message_mot_cle_GUIDE.txt` (guide des aliments qui calent + question « ton plus gros défi ? »).
 - Presque 0 commentaire et 0 partage : le CTA « DÉCLIC » ne convertit pas encore (il faut le dire à l'oral et l'écrire à l'écran, et automatiser la réponse).
 
 ## Parcours d'Hélène (ses mots, 23/11/2026)

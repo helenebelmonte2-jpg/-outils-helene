@@ -1,0 +1,11 @@
+Message automatique (ManyChat) quand une personne commente « GUIDE » (Reel « Autorisé ou pas »)
+
+1) Message envoyé tout de suite :
+Coucou 💛 Merci pour ton commentaire !
+Comme promis, voici mon guide gratuit des aliments qui t'aident vraiment à perdre du poids (ceux qui calent, sans te priver) 👇
+[LIEN DU GUIDE]
+
+2) Question pour lancer la conversation (dans le même message ou juste après) :
+Dis-moi, toi, c'est quoi ton plus gros défi en ce moment pour perdre du poids ? Les grignotages, le manque de temps, les horaires… ?
+
+3) Si elle répond → suivre la trame : problématique → je creuse → valeur → important et urgent → appel (voir messages_nouveaux_abonnes.html)
