@@ -80,6 +80,13 @@ Docs business : contrat, mail de bienvenue, questionnaire de profil alimentaire,
 - Idées de titres YouTube suivants (24/11) : « Tu manges peu mais tu ne perds pas de poids ? », « Perdre 10 kg avec des horaires décalés : ma méthode de soignante », « 7 aliments healthy qui t'empêchent de maigrir », « Ce que je mange en une journée pour garder mes 10 kg en moins ».
 - Chiffres à noter chaque semaine : TOFU, MOFU, abonnés gagnés, conversations, appels, ventes.
 
+## Script de closing de Jonathan (reçu par mail le 19/11/2026)
+- PDF sauvegardé : `business/Script_de_closing_Jonathan.pdf` (16 p., mail « Ton script de closing » de charlieragency@gmail.com).
+- Prix : **990 € pour les 5 premières, puis 1 500 €** ; paiement en 3 fois = seule souplesse, jamais de remise. (Attention réforme du 20/11/2026 sur le paiement fractionné : voir fiche PDF paiement.)
+- Appel de 45 min : accueil → cadre (« si ce n'est pas pour toi, je te le dirai ») → déclencheur (pourquoi maintenant) → **filtre santé obligatoire** (enceinte/allaitante, traitement, TCA → pas de vente) → diagnostic 4 piliers (alimentation, sport, temps/organisation, suivi) → diagnostic en 1 phrase → objectif chiffré + date → conséquences → coût de ne rien faire → projection + pourquoi → déjà essayé → décision/budget → freins → **récap validé par un vrai oui** → prescription (« tu m'as dit → on fait → pourquoi ça marche ») → prix puis silence → close (« en 1 fois ou en 3 fois ? ») → objections en 6 temps → paiement pendant l'appel → relances (lapin, « je dois réfléchir » : J0 vocal, J+2, J+5, J+10).
+- 5 questions à mettre dans le formulaire Calendly ; checklist avant le prix (section 30) ; note sur 100 après chaque appel (section 32).
+- Champs « À COMPLÉTER » encore à remplir (histoire, légitimité, preuves réelles, contenu exact de l'accompagnement, programme sportif, places restantes, liens Stripe/Calendly, après paiement). Rappel : ne pas citer « 10 kg » pour son histoire ; pas de fausses preuves.
+
 ## Format MOFU (modèle de Jonathan, Frame.io « Reels voiture 15-11 · 7 reels · V3 morphing », lien https://f.io/heGOYYqn)
 - Durée 45 s à 1 min 30. Vertical 1080x1920, **fond noir**.
 - **Vidéo horizontale (16:9) pleine largeur au centre**, d'environ y=607 à 1325 (image d'exemple : `modeles/format_mofu_jonathan_exemple.png`).
